@@ -1,7 +1,9 @@
 import heroImg from "@/assets/hero-car.jpg";
 import { Search, ShieldCheck, XCircle, Headphones, MapPin } from "lucide-react";
+import { useScrollY } from "@/hooks/use-reveal";
 
 export function Hero() {
+  const y = useScrollY();
   return (
     <section
       id="home"
@@ -12,9 +14,13 @@ export function Hero() {
         alt="Car driving on scenic highway"
         width={1920}
         height={1088}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-[115%] object-cover will-change-transform"
+        style={{ transform: `translate3d(0, ${y * 0.35}px, 0) scale(1.05)` }}
       />
       <div className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy/80 to-near-black/70" />
+      {/* floating blobs */}
+      <div className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 rounded-full bg-brand/30 blur-3xl animate-blob" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-light/25 blur-3xl animate-blob" style={{ animationDelay: "-6s" }} />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full animate-fade-up">
         <div className="max-w-3xl">
           <span className="inline-block px-3 py-1 rounded-full bg-brand-light/20 text-brand-light text-xs font-medium border border-brand-light/30 mb-5">
