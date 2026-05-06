@@ -8,12 +8,12 @@ const reviews = [
 
 export function Testimonials() {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy">What Our Customers Say</h2>
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">What Our Customers Say</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {reviews.map((r) => (
             <div key={r.name} className="p-6 rounded-xl bg-card border hover:shadow-xl transition">
               <div className="flex gap-1 text-brand">
