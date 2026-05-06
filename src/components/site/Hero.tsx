@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] pt-16 flex items-center text-white overflow-hidden"
+      className="relative min-h-[88vh] pt-16 flex items-center text-white overflow-hidden"
     >
       <img
         src={heroImg}
@@ -21,22 +21,22 @@ export function Hero() {
       {/* floating blobs */}
       <div className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 rounded-full bg-brand/30 blur-3xl animate-blob" />
       <div className="pointer-events-none absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-light/25 blur-3xl animate-blob" style={{ animationDelay: "-6s" }} />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full animate-fade-up">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 w-full animate-fade-up">
         <div className="max-w-3xl">
-          <span className="inline-block px-3 py-1 rounded-full bg-brand-light/20 text-brand-light text-xs font-medium border border-brand-light/30 mb-5">
+          <span className="inline-block px-3 py-1 rounded-full bg-brand-light/20 text-brand-light text-xs font-medium border border-brand-light/30 mb-4 sm:mb-5">
             ⚡ Zero Deposit · Doorstep Delivery
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
             Drive Your Way — <span className="text-brand-light">Zero Deposit,</span> Unlimited Freedom
           </h1>
-          <p className="mt-5 text-lg text-white/85 max-w-2xl">
+          <p className="mt-4 sm:mt-5 text-base sm:text-lg text-white/85 max-w-2xl">
             Self-drive & chauffeur cars starting ₹999/day. Doorstep delivery. No hidden charges.
           </p>
         </div>
 
         {/* Booking card */}
-        <div className="mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-5 sm:p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
             <Field label="Select City">
               <select className="field">
                 <option>Mumbai</option>
@@ -60,7 +60,7 @@ export function Hero() {
             <Field label="Return Date & Time">
               <input className="field" type="datetime-local" />
             </Field>
-            <button className="bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg font-semibold flex items-center justify-center gap-2 h-[52px] mt-auto transition transform hover:-translate-y-0.5">
+            <button className="w-full bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg font-semibold flex items-center justify-center gap-2 h-[52px] lg:mt-auto transition transform hover:-translate-y-0.5">
               <Search className="h-5 w-5" /> Search Cars
             </button>
           </div>

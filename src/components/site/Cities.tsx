@@ -11,17 +11,17 @@ const cities = [
 
 export function Cities() {
   return (
-    <section id="cities" className="py-20 bg-background">
+    <section id="cities" className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy">We Operate Across Maharashtra & Beyond</h2>
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">We Operate Across Maharashtra & Beyond</h2>
           <p className="mt-3 text-muted-foreground">Pick up your car in any of these cities</p>
         </div>
-        <div className="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 snap-x">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
           {cities.map((c) => (
             <div
               key={c.name}
-              className="snap-start shrink-0 w-56 rounded-xl overflow-hidden border bg-card hover:shadow-xl transition group"
+              className="rounded-xl overflow-hidden border bg-card hover:shadow-xl transition group"
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
