@@ -12,6 +12,7 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { AppBanner } from "@/components/site/AppBanner";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { Reveal } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,16 +39,16 @@ function Index() {
       <Navbar />
       <main>
         <Hero />
-        <Cars />
-        <Tariff />
-        <Cities />
-        <HowItWorks />
-        <WhyUs />
-        <Deals />
-        <Eligibility />
-        <Testimonials />
-        <AppBanner />
-        <Faq />
+        <Reveal variant="up"><Cars /></Reveal>
+        <Reveal variant="zoom"><Tariff /></Reveal>
+        <Reveal variant="left"><Cities /></Reveal>
+        <Reveal variant="up"><HowItWorks /></Reveal>
+        <Reveal variant="right"><WhyUs /></Reveal>
+        <Reveal variant="zoom"><Deals /></Reveal>
+        <Reveal variant="left"><Eligibility /></Reveal>
+        <Reveal variant="up"><Testimonials /></Reveal>
+        <Reveal variant="zoom"><AppBanner /></Reveal>
+        <Reveal variant="up"><Faq /></Reveal>
       </main>
       <Footer />
     </div>
