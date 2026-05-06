@@ -25,9 +25,9 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-2 font-bold">
-          <Car className="h-6 w-6 text-brand-light" />
-          <span className="text-base sm:text-lg tracking-tight">Manasvi Tours and Travels</span>
+        <a href="#home" className="flex items-center gap-2 font-bold min-w-0">
+          <Car className="h-6 w-6 text-brand-light shrink-0" />
+          <span className="text-sm sm:text-lg tracking-tight truncate">Manasvi Tours and Travels</span>
         </a>
         <nav className="hidden lg:flex items-center gap-7 text-sm">
           {links.map((l) => (

@@ -3,11 +3,11 @@ import { Car, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube } from "l
 export function Footer() {
   return (
     <footer id="footer" className="bg-near-black text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
         <div>
           <div className="flex items-center gap-2 font-bold text-lg">
             <Car className="h-6 w-6 text-brand-light" />
-            Manasvi Tours and Travels
+            <span>Manasvi Tours and Travels</span>
           </div>
           <p className="mt-3 text-sm text-white/70 italic">"Your Journey, Our Responsibility"</p>
           <div className="flex gap-3 mt-5">
@@ -21,12 +21,12 @@ export function Footer() {
         <div>
           <h4 className="font-semibold mb-4">Contact Us</h4>
           <ul className="space-y-3 text-sm text-white/80">
-            <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-light" /> +91 98765 43210</li>
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-brand-light" /> hello@manasvitours.com</li>
+            <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-light shrink-0" /><span>+91 98765 43210</span></li>
+            <li className="flex items-center gap-2 break-all"><Mail className="h-4 w-4 text-brand-light shrink-0" /><span>hello@manasvitours.com</span></li>
           </ul>
           <a
             href="#"
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-md bg-green-600 hover:bg-green-500 text-white text-sm font-medium transition"
+            className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-md bg-green-600 hover:bg-green-500 text-white text-sm font-medium transition"
           >
             <MessageCircle className="h-4 w-4" /> WhatsApp Us
           </a>

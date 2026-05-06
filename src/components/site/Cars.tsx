@@ -27,10 +27,10 @@ export function Cars() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("All");
   const filtered = tab === "All" ? cars : cars.filter((c) => c.category === tab);
   return (
-    <section id="cars" className="py-20 bg-background">
+    <section id="cars" className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy">Choose Your Ride</h2>
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">Choose Your Ride</h2>
           <p className="mt-3 text-muted-foreground">Pick from our range of well-maintained vehicles</p>
         </div>
         <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -48,7 +48,7 @@ export function Cars() {
             </button>
           ))}
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {filtered.map((c) => (
             <article
               key={c.name}

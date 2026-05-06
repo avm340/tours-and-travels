@@ -11,13 +11,13 @@ const features = [
 
 export function WhyUs() {
   return (
-    <section id="why" className="py-20 bg-navy text-navy-foreground">
+    <section id="why" className="py-12 sm:py-20 bg-navy text-navy-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold">Why Manasvi Tours and Travels?</h2>
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-4xl font-bold">Why Manasvi Tours and Travels?</h2>
           <p className="mt-3 text-white/70">Everything you need for a worry-free journey</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {features.map((f) => (
             <div
               key={f.title}

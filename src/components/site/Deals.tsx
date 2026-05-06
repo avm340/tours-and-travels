@@ -37,13 +37,13 @@ function useCountdown(seconds: number) {
 export function Deals() {
   const time = useCountdown(60 * 60 * 12);
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy">Exclusive Offers & Discounts</h2>
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">Exclusive Offers & Discounts</h2>
           <p className="mt-3 text-muted-foreground">Limited-time deals to save more on your ride</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {deals.map((d) => (
             <div
               key={d.title}
