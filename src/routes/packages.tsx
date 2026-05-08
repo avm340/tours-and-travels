@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { Calendar, Check, ArrowRight, Send } from "lucide-react";
+import { Calendar, Check, ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/packages")({
@@ -112,32 +112,7 @@ function PackagesPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {filtered.map((p) => (
-                <div key={p.name} className="rounded-2xl bg-card border overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all flex flex-col">
-                  <div className="relative h-44 overflow-hidden">
-                    <img src={p.img} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
-                    <span className="absolute top-3 left-3 bg-brand text-brand-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                      <Calendar className="h-3 w-3" /> {p.days}
-                    </span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-lg font-bold text-navy">{p.name}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">{p.route} · {p.car}</p>
-                    <ul className="mt-3 space-y-1.5 text-sm flex-1">
-                      {p.highlights.map((h) => (
-                        <li key={h} className="flex items-start gap-2">
-                          <Check className="h-4 w-4 text-brand mt-0.5 shrink-0" /> {h}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 text-xl font-bold text-brand">{p.price}</p>
-                    <div className="mt-4 grid grid-cols-2 gap-2">
-                      <button className="py-2 rounded-md border border-navy text-navy text-sm font-medium hover:bg-navy hover:text-navy-foreground transition">View Itinerary</button>
-                      <button className="py-2 rounded-md bg-brand text-brand-foreground text-sm font-medium hover:bg-brand/90 transition flex items-center justify-center gap-1">
-                        Book Now <ArrowRight className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <PackageCard key={p.name} p={p} />
               ))}
             </div>
           </div>
