@@ -118,23 +118,26 @@ function OutstationPage() {
             </Reveal>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {routes.map((r) => (
-                <div key={r.from + r.to} className="rounded-2xl bg-card border p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                  <div className="flex items-center gap-2 text-navy">
-                    <MapPin className="h-5 w-5 text-brand" />
-                    <h3 className="font-bold text-lg">{r.from} → {r.to}</h3>
-                  </div>
-                  <div className="mt-3 flex items-center gap-3 text-sm">
-                    <span className="px-2 py-1 rounded-md bg-brand/10 text-brand font-medium">{r.km} km</span>
-                    <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{r.hr} hr</span>
-                  </div>
-                  <p className="mt-4 text-2xl font-bold text-near-black">
-                    ₹{r.price.toLocaleString()}<span className="text-sm font-normal text-muted-foreground"> starting</span>
-                  </p>
-                  <button className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
-                    Book This Route <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
+                <RouteCard key={r.from + r.to} r={r} />
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How Outstation Booking Works */}
+        <section className="py-12 sm:py-20 bg-soft">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <Reveal variant="up">
+              <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-4xl font-bold text-navy">How Outstation Booking Works</h2>
+                <p className="mt-3 text-muted-foreground">Three simple steps. Confirmed in minutes.</p>
+              </div>
+            </Reveal>
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-brand/30" />
+              <Step n={1} icon={<MapPin className="h-5 w-5" />} title="Select Route" desc="Pick your pickup, drop and travel date." />
+              <Step n={2} icon={<ClipboardCheck className="h-5 w-5" />} title="Confirm Booking" desc="Choose car tier, review fare, pay securely." />
+              <Step n={3} icon={<UserCheck className="h-5 w-5" />} title="Driver Assigned" desc="Receive driver details on WhatsApp & SMS." />
             </div>
           </div>
         </section>
