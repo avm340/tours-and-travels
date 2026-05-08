@@ -67,5 +67,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <SidebarProvider defaultOpen={false}>
+      <div className="flex w-full min-h-screen">
+        <AppSidebar />
+        <div className="flex-1 min-w-0">
+          <div className="hidden lg:block fixed left-2 top-20 z-40">
+            <SidebarTrigger className="bg-navy text-navy-foreground hover:bg-navy/90" />
+          </div>
+          <Outlet />
+        </div>
+      </div>
+    </SidebarProvider>
+  );
 }
