@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, Car } from "lucide-react";
+import { Menu, X, Car, Phone } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 type NavLink = { label: string; to?: string; href?: string };
@@ -54,10 +54,17 @@ export function Navbar() {
           {links.map((l) => renderLink(l, undefined, "hover:text-brand-light transition-colors"))}
         </nav>
         <div className="hidden lg:flex items-center gap-3">
+          <a
+            href="tel:+919876543210"
+            className="flex items-center gap-1.5 text-sm text-brand-light hover:text-white transition"
+          >
+            <Phone className="h-4 w-4" />
+            <span className="font-medium">+91 98765 43210</span>
+          </a>
           <button className="px-4 py-2 text-sm rounded-md border border-white/40 hover:bg-white/10 transition">
             Login / Sign Up
           </button>
-          <button className="px-4 py-2 text-sm rounded-md bg-brand hover:bg-brand/90 font-medium transition">
+          <button className="pulse-cta px-4 py-2 text-sm rounded-md bg-brand hover:bg-brand/90 font-medium transition">
             Book Now
           </button>
         </div>
