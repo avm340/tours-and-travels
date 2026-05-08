@@ -60,6 +60,11 @@
   33% { transform: translate(30px,-20px) scale(1.08); }
   66% { transform: translate(-20px,25px) scale(0.95); }
 }
+@keyframes soft-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(0 67 241 / 0.55); }
+  50%      { box-shadow: 0 0 0 10px rgb(0 67 241 / 0); }
+}
+.pulse-cta { animation: soft-pulse 3s ease-in-out infinite; }
 
 :root {
   --radius: 0.625rem;

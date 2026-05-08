@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { MapPin, Clock, ArrowRight, Users, Check, X, Search } from "lucide-react";
+import { MapPin, Clock, ArrowRight, Users, Check, X, Search, Car, ClipboardCheck, UserCheck } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/outstation")({
@@ -22,12 +22,12 @@ export const Route = createFileRoute("/outstation")({
 });
 
 const routes = [
-  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100 },
-  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3300 },
-  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2400 },
-  { from: "Pune", to: "Goa", km: 460, hr: "7", price: 6500 },
-  { from: "Mumbai", to: "Aurangabad", km: 340, hr: "5.5", price: 4800 },
-  { from: "Pune", to: "Shirdi", km: 190, hr: "3.5", price: 2700 },
+  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100, popular: true },
+  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3300, popular: true },
+  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2400, popular: false },
+  { from: "Pune", to: "Goa", km: 460, hr: "7", price: 6500, popular: false },
+  { from: "Mumbai", to: "Aurangabad", km: 340, hr: "5.5", price: 4800, popular: false },
+  { from: "Pune", to: "Shirdi", km: 190, hr: "3.5", price: 2700, popular: false },
 ];
 
 const fleet = [
@@ -118,23 +118,26 @@ function OutstationPage() {
             </Reveal>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {routes.map((r) => (
-                <div key={r.from + r.to} className="rounded-2xl bg-card border p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                  <div className="flex items-center gap-2 text-navy">
-                    <MapPin className="h-5 w-5 text-brand" />
-                    <h3 className="font-bold text-lg">{r.from} → {r.to}</h3>
-                  </div>
-                  <div className="mt-3 flex items-center gap-3 text-sm">
-                    <span className="px-2 py-1 rounded-md bg-brand/10 text-brand font-medium">{r.km} km</span>
-                    <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{r.hr} hr</span>
-                  </div>
-                  <p className="mt-4 text-2xl font-bold text-near-black">
-                    ₹{r.price.toLocaleString()}<span className="text-sm font-normal text-muted-foreground"> starting</span>
-                  </p>
-                  <button className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
-                    Book This Route <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
+                <RouteCard key={r.from + r.to} r={r} />
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How Outstation Booking Works */}
+        <section className="py-12 sm:py-20 bg-soft">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <Reveal variant="up">
+              <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-4xl font-bold text-navy">How Outstation Booking Works</h2>
+                <p className="mt-3 text-muted-foreground">Three simple steps. Confirmed in minutes.</p>
+              </div>
+            </Reveal>
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-brand/30" />
+              <Step n={1} icon={<MapPin className="h-5 w-5" />} title="Select Route" desc="Pick your pickup, drop and travel date." />
+              <Step n={2} icon={<ClipboardCheck className="h-5 w-5" />} title="Confirm Booking" desc="Choose car tier, review fare, pay securely." />
+              <Step n={3} icon={<UserCheck className="h-5 w-5" />} title="Driver Assigned" desc="Receive driver details on WhatsApp & SMS." />
             </div>
           </div>
         </section>
@@ -203,5 +206,62 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
       <div className="mt-1.5">{children}</div>
     </label>
+  );
+}
+
+function RouteCard({ r }: { r: { from: string; to: string; km: number; hr: string; price: number; popular: boolean } }) {
+  const [trip, setTrip] = useState<"one" | "round">("one");
+  const price = trip === "one" ? r.price : Math.round(r.price * 1.85);
+  return (
+    <div className="relative rounded-2xl bg-card border p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+      {r.popular && (
+        <span className="absolute -top-2.5 right-4 bg-brand text-brand-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+          Most Booked
+        </span>
+      )}
+      <div className="flex items-center gap-2 text-navy">
+        <Car className="h-5 w-5 text-brand" />
+        <h3 className="font-bold text-lg">{r.from} → {r.to}</h3>
+      </div>
+      <div className="mt-3 flex items-center gap-3 text-sm">
+        <span className="px-2 py-1 rounded-md bg-brand/10 text-brand font-medium">{r.km} km</span>
+        <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{r.hr} hr</span>
+      </div>
+      <div className="mt-4 inline-flex p-0.5 rounded-lg bg-soft border text-xs font-medium">
+        <button
+          onClick={() => setTrip("one")}
+          className={`px-3 py-1.5 rounded-md transition ${trip === "one" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
+        >
+          One Way
+        </button>
+        <button
+          onClick={() => setTrip("round")}
+          className={`px-3 py-1.5 rounded-md transition ${trip === "round" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
+        >
+          Round Trip
+        </button>
+      </div>
+      <p className="mt-3 text-2xl font-bold text-near-black">
+        ₹{price.toLocaleString()}
+        <span className="text-sm font-normal text-muted-foreground"> starting</span>
+      </p>
+      <button className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
+        Book This Route <ArrowRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function Step({ n, icon, title, desc }: { n: number; icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="relative bg-card border rounded-2xl p-6 text-center">
+      <div className="mx-auto h-14 w-14 rounded-full bg-brand text-brand-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-brand/30">
+        {n}
+      </div>
+      <div className="mt-3 inline-flex items-center gap-1.5 text-brand font-medium text-sm">
+        {icon} {title}
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+    </div>
   );
 }
