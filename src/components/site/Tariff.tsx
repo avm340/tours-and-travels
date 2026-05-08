@@ -41,7 +41,7 @@ export function Tariff() {
     <section id="tariff" className="py-12 sm:py-20 bg-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-4xl font-bold text-navy">Flexible Plans for Every Trip</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">Transparent Per-Trip Pricing</h2>
           <p className="mt-3 text-muted-foreground">Choose the plan that fits your journey</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
