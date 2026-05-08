@@ -1,6 +1,8 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/site/AppSidebar";
+import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
+import { BackToTop } from "@/components/site/BackToTop";
 
 import appCss from "../styles.css?url";
 
@@ -76,6 +78,8 @@ function RootComponent() {
             <SidebarTrigger className="bg-navy text-navy-foreground hover:bg-navy/90" />
           </div>
           <Outlet />
+          <FloatingWhatsApp />
+          <BackToTop />
         </div>
       </div>
     </SidebarProvider>
