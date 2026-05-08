@@ -208,3 +208,60 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
+
+function RouteCard({ r }: { r: { from: string; to: string; km: number; hr: string; price: number; popular: boolean } }) {
+  const [trip, setTrip] = useState<"one" | "round">("one");
+  const price = trip === "one" ? r.price : Math.round(r.price * 1.85);
+  return (
+    <div className="relative rounded-2xl bg-card border p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+      {r.popular && (
+        <span className="absolute -top-2.5 right-4 bg-brand text-brand-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+          Most Booked
+        </span>
+      )}
+      <div className="flex items-center gap-2 text-navy">
+        <Car className="h-5 w-5 text-brand" />
+        <h3 className="font-bold text-lg">{r.from} → {r.to}</h3>
+      </div>
+      <div className="mt-3 flex items-center gap-3 text-sm">
+        <span className="px-2 py-1 rounded-md bg-brand/10 text-brand font-medium">{r.km} km</span>
+        <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{r.hr} hr</span>
+      </div>
+      <div className="mt-4 inline-flex p-0.5 rounded-lg bg-soft border text-xs font-medium">
+        <button
+          onClick={() => setTrip("one")}
+          className={`px-3 py-1.5 rounded-md transition ${trip === "one" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
+        >
+          One Way
+        </button>
+        <button
+          onClick={() => setTrip("round")}
+          className={`px-3 py-1.5 rounded-md transition ${trip === "round" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
+        >
+          Round Trip
+        </button>
+      </div>
+      <p className="mt-3 text-2xl font-bold text-near-black">
+        ₹{price.toLocaleString()}
+        <span className="text-sm font-normal text-muted-foreground"> starting</span>
+      </p>
+      <button className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
+        Book This Route <ArrowRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function Step({ n, icon, title, desc }: { n: number; icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="relative bg-card border rounded-2xl p-6 text-center">
+      <div className="mx-auto h-14 w-14 rounded-full bg-brand text-brand-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-brand/30">
+        {n}
+      </div>
+      <div className="mt-3 inline-flex items-center gap-1.5 text-brand font-medium text-sm">
+        {icon} {title}
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+    </div>
+  );
+}
