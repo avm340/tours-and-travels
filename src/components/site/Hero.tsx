@@ -36,8 +36,17 @@ export function Hero() {
 
         {/* Booking card */}
         <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-            <Field label="Select City">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            <Field label="Trip Category">
+              <select className="field">
+                <option>Outstation</option>
+                <option>Local — Half Day</option>
+                <option>Local — Full Day</option>
+                <option>Airport Transfer</option>
+                <option>Tour Package</option>
+              </select>
+            </Field>
+            <Field label="From City">
               <select className="field">
                 <option>Mumbai</option>
                 <option>Pune</option>
@@ -46,19 +55,26 @@ export function Hero() {
                 <option>Nagpur</option>
               </select>
             </Field>
-            <Field label="Trip Type">
+            <Field label="To City">
               <select className="field">
-                <option>Self Drive</option>
-                <option>With Driver</option>
-                <option>Outstation</option>
-                <option>Airport Transfer</option>
+                <option>Pune</option>
+                <option>Shirdi</option>
+                <option>Nashik</option>
+                <option>Goa</option>
+                <option>Aurangabad</option>
+                <option>Mahabaleshwar</option>
               </select>
             </Field>
             <Field label="Pickup Date & Time">
               <input className="field" type="datetime-local" />
             </Field>
-            <Field label="Return Date & Time">
-              <input className="field" type="datetime-local" />
+            <Field label="Passengers">
+              <select className="field">
+                <option>1-2</option>
+                <option>3-4</option>
+                <option>5-6</option>
+                <option>7+</option>
+              </select>
             </Field>
             <button className="w-full bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg font-semibold flex items-center justify-center gap-2 h-[52px] lg:mt-auto transition transform hover:-translate-y-0.5">
               <Search className="h-5 w-5" /> Search Cars
