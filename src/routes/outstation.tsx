@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { MapPin, Clock, ArrowRight, Users, Check, X, Search } from "lucide-react";
+import { MapPin, Clock, ArrowRight, Users, Check, X, Search, Car, ClipboardCheck, UserCheck } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/outstation")({
@@ -22,12 +22,12 @@ export const Route = createFileRoute("/outstation")({
 });
 
 const routes = [
-  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100 },
-  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3300 },
-  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2400 },
-  { from: "Pune", to: "Goa", km: 460, hr: "7", price: 6500 },
-  { from: "Mumbai", to: "Aurangabad", km: 340, hr: "5.5", price: 4800 },
-  { from: "Pune", to: "Shirdi", km: 190, hr: "3.5", price: 2700 },
+  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100, popular: true },
+  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3300, popular: true },
+  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2400, popular: false },
+  { from: "Pune", to: "Goa", km: 460, hr: "7", price: 6500, popular: false },
+  { from: "Mumbai", to: "Aurangabad", km: 340, hr: "5.5", price: 4800, popular: false },
+  { from: "Pune", to: "Shirdi", km: 190, hr: "3.5", price: 2700, popular: false },
 ];
 
 const fleet = [
