@@ -1,34 +1,38 @@
-import { Clock, Calendar, CalendarDays, CalendarRange, Check } from "lucide-react";
+import { Clock, Sun, Route, Plane, Check, X } from "lucide-react";
 
 const plans = [
   {
     icon: Clock,
-    name: "Hourly",
-    price: "₹150",
-    unit: "/hr",
-    features: ["Minimum 4 hours", "~10 km/hr included", "Quick city errands", "Instant booking"],
+    name: "Local Half Day",
+    price: "₹899",
+    unit: " / 4hr · 40km",
+    features: ["Chauffeur included", "Within city limits", "Fuel included"],
+    excluded: ["Toll & parking extra", "Extra km @ ₹12/km"],
   },
   {
-    icon: Calendar,
-    name: "Daily",
-    price: "₹999",
-    unit: "/day",
+    icon: Sun,
+    name: "Local Full Day",
+    price: "₹1499",
+    unit: " / 8hr · 80km",
     popular: true,
-    features: ["Unlimited km within city", "24-hour rental", "Free cancellation", "Doorstep delivery"],
+    features: ["Chauffeur included", "Within city limits", "Fuel included", "Free cancellation"],
+    excluded: ["Toll & parking extra", "Extra km @ ₹12/km"],
   },
   {
-    icon: CalendarDays,
-    name: "Weekly",
-    price: "Save 10%",
-    unit: "",
-    features: ["3–7 day bookings", "Best for vacations", "Free GPS navigation", "Priority support"],
+    icon: Route,
+    name: "Outstation",
+    price: "₹14",
+    unit: " / km · min 250km",
+    features: ["Per-km billing", "Driver bata included", "AC sedan baseline"],
+    excluded: ["Toll, parking & permits extra", "Night charges after 10 PM"],
   },
   {
-    icon: CalendarRange,
-    name: "Monthly",
-    price: "Best Value",
-    unit: "",
-    features: ["10+ days special pricing", "Dedicated manager", "Free swap option", "Corporate friendly"],
+    icon: Plane,
+    name: "Airport Transfer",
+    price: "₹699",
+    unit: " flat",
+    features: ["One-way pickup/drop", "Toll included", "Meet & greet"],
+    excluded: ["Waiting > 45 min chargeable"],
   },
 ];
 
