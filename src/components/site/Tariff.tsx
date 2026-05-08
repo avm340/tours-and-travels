@@ -64,10 +64,16 @@ export function Tariff() {
               <p className="mt-2 text-3xl font-bold text-near-black">
                 {p.price}<span className="text-base font-normal text-muted-foreground">{p.unit}</span>
               </p>
-              <ul className="mt-5 space-y-2.5 text-sm">
+              <ul className="mt-5 space-y-2 text-sm">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <Check className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+                {p.excluded.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-muted-foreground">
+                    <X className="h-4 w-4 mt-0.5 shrink-0" />
                     <span>{f}</span>
                   </li>
                 ))}
