@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as OutstationRouteImport } from './routes/outstation'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PackagesRoute = PackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OutstationRoute = OutstationRouteImport.update({
   id: '/outstation',
   path: '/outstation',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/outstation': typeof OutstationRoute
+  '/packages': typeof PackagesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/outstation': typeof OutstationRoute
+  '/packages': typeof PackagesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/outstation': typeof OutstationRoute
+  '/packages': typeof PackagesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/outstation'
+  fullPaths: '/' | '/outstation' | '/packages'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/outstation'
-  id: '__root__' | '/' | '/outstation'
+  to: '/' | '/outstation' | '/packages'
+  id: '__root__' | '/' | '/outstation' | '/packages'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OutstationRoute: typeof OutstationRoute
+  PackagesRoute: typeof PackagesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/outstation': {
       id: '/outstation'
       path: '/outstation'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OutstationRoute: OutstationRoute,
+  PackagesRoute: PackagesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
