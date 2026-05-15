@@ -3,21 +3,9 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { MapPin, Clock, ArrowRight, Users, Check, X, Search, Car, ClipboardCheck, UserCheck } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/outstation")({
-  head: () => ({
-    meta: [
-      { title: "Outstation Cabs from Mumbai & Pune — Manasvi Tours and Travels" },
-      {
-        name: "description",
-        content:
-          "Book chauffeur-driven outstation cabs across Maharashtra. Sedan, SUV & luxury cars from ₹14/km. Transparent pricing, on-time pickup.",
-      },
-      { property: "og:title", content: "Outstation Cabs — Manasvi Tours" },
-      { property: "og:description", content: "Comfortable, on-time, affordable outstation cabs." },
-    ],
-  }),
   component: OutstationPage,
 });
 
@@ -51,6 +39,13 @@ const exclusions = [
 
 function OutstationPage() {
   const [round, setRound] = useState(false);
+
+  useEffect(() => {
+    document.title = "Outstation Cabs from Mumbai & Pune — Manasvi Tours and Travels";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Book chauffeur-driven outstation cabs across Maharashtra. Sedan, SUV & luxury cars from ₹14/km. Transparent pricing, on-time pickup.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-background animate-fade-in">
       <Navbar />
@@ -67,7 +62,7 @@ function OutstationPage() {
                 Chauffeur-driven sedans, SUVs and luxury cars across Maharashtra and beyond.
               </p>
             </Reveal>
-            <div className="mt-8 bg-background text-foreground rounded-2xl shadow-2xl p-4 sm:p-6">
+            <div className="mt-8 bg-background text-foreground rounded-2xl shadow-2xl p-4 sm:p-6 float-soft">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 <Field label="From"><input className="field" placeholder="Mumbai" /></Field>
                 <Field label="To"><input className="field" placeholder="Shirdi" /></Field>

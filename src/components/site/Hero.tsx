@@ -30,7 +30,7 @@ export function Hero() {
             ⚡ Zero Hidden Charges · Verified Drivers
           </span>
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-            Your Journey, <span className="text-brand-light">Our Responsibility</span>
+            Your Journey, <span className="text-brand-light shimmer-text">Our Responsibility</span>
           </h1>
           <p className="mt-4 sm:mt-5 text-base sm:text-lg text-white/85 max-w-2xl">
             Chauffeur-driven outstation cabs &amp; curated tour packages across Maharashtra.
@@ -39,7 +39,7 @@ export function Hero() {
         </div>
 
         {/* Booking card */}
-        <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6">
+        <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6 float-soft">
           {/* Round trip toggle */}
           <div className="mb-4 flex items-center gap-3">
             <button
@@ -101,13 +101,23 @@ export function Hero() {
         </div>
 
         {/* Trust counters */}
-        <div className="mt-8 grid grid-cols-3 gap-3 sm:gap-6">
-          <Counter icon={<Users className="h-5 w-5" />} value={<CountUp to={12000} suffix="+" />} label="Happy Customers" />
-          <Counter icon={<Map className="h-5 w-5" />} value={<CountUp to={50} suffix="+" />} label="Destinations" />
-          <Counter icon={<Star className="h-5 w-5" />} value={<><CountUp to={4.8} decimals={1} />★</>} label="Average Rating" />
+        <div className="mt-6 sm:mt-8 grid grid-cols-3 gap-2 sm:gap-6">
+          <Counter icon={<Users className="h-4 w-4 sm:h-5 sm:w-5" />} value={<CountUp to={12000} suffix="+" />} label="Happy Travellers" />
+          <Counter icon={<Map className="h-4 w-4 sm:h-5 sm:w-5" />} value={<CountUp to={50} suffix="+" />} label="Destinations" />
+          <Counter icon={<Star className="h-4 w-4 sm:h-5 sm:w-5" />} value={<><CountUp to={4.8} decimals={1} />★</>} label="Average Rating" />
         </div>
 
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+        {/* Mobile: horizontal scroll badges */}
+        <div className="sm:hidden mt-4 -mx-4 px-4">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+            <Badge icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified Drivers" />
+            <Badge icon={<XCircle className="h-3.5 w-3.5" />} text="Free Cancellation" />
+            <Badge icon={<Headphones className="h-3.5 w-3.5" />} text="24/7 Support" />
+            <Badge icon={<MapPin className="h-3.5 w-3.5" />} text="GPS Tracked" />
+          </div>
+        </div>
+        {/* Desktop: grid badges */}
+        <div className="hidden sm:grid grid-cols-4 gap-3 mt-6 text-sm">
           <Badge icon={<ShieldCheck className="h-4 w-4" />} text="Verified Drivers" />
           <Badge icon={<XCircle className="h-4 w-4" />} text="Free Cancellation" />
           <Badge icon={<Headphones className="h-4 w-4" />} text="24/7 Support" />
@@ -117,11 +127,12 @@ export function Hero() {
 
       <style>{`
         .field {
-          width: 100%; height: 48px; padding: 0 12px;
+          width: 100%; height: 44px; padding: 0 12px;
           border-radius: 0.5rem; background: var(--color-soft);
-          border: 1px solid var(--color-border); font-size: 0.95rem;
+          border: 1px solid var(--color-border); font-size: 0.875rem;
           color: var(--color-foreground); outline: none;
         }
+        @media (min-width: 640px) { .field { height: 48px; font-size: 0.95rem; } }
         .field:focus { border-color: var(--color-brand); }
       `}</style>
     </section>
@@ -139,21 +150,21 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm text-white">
+    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm text-white shrink-0 whitespace-nowrap">
       <span className="text-brand-light">{icon}</span>
-      <span className="font-medium">{text}</span>
+      <span className="font-medium text-xs sm:text-sm">{text}</span>
     </div>
   );
 }
 
 function Counter({ icon, value, label }: { icon: React.ReactNode; value: React.ReactNode; label: string }) {
   return (
-    <div className="rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm px-4 py-4 sm:py-5 text-center">
-      <div className="flex items-center justify-center gap-2 text-brand-light">
-        {icon}
-        <span className="text-2xl sm:text-3xl font-bold text-white tabular-nums">{value}</span>
+    <div className="rounded-xl sm:rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm px-2 sm:px-4 py-3 sm:py-5 text-center">
+      <div className="flex items-center justify-center gap-1 sm:gap-2 text-brand-light">
+        <span className="hidden sm:inline">{icon}</span>
+        <span className="text-xl sm:text-3xl font-bold text-white tabular-nums">{value}</span>
       </div>
-      <p className="mt-1 text-xs sm:text-sm text-white/75">{label}</p>
+      <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-sm text-white/75 leading-tight">{label}</p>
     </div>
   );
 }

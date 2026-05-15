@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, Car, Phone } from "lucide-react";
+import { Menu, X, Compass, Phone } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 type NavLink = { label: string; to?: string; href?: string };
@@ -47,7 +47,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-bold min-w-0">
-          <Car className="h-6 w-6 text-brand-light shrink-0" />
+          <Compass className="h-6 w-6 text-brand-light shrink-0" />
           <span className="text-sm sm:text-lg tracking-tight truncate">Manasvi Tours and Travels</span>
         </Link>
         <nav className="hidden lg:flex items-center gap-7 text-sm">

@@ -1,4 +1,4 @@
-import { Car, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, Lock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
+import { Compass, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, Lock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
 import { useState } from "react";
 
 export function Footer() {
@@ -51,7 +51,7 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div>
             <div className="flex items-center gap-2 font-bold text-lg">
-              <Car className="h-6 w-6 text-brand-light" />
+              <Compass className="h-6 w-6 text-brand-light" />
               <span>Manasvi Tours and Travels</span>
             </div>
             <p className="mt-3 text-sm text-white/70 italic">"Your Journey, Our Responsibility"</p>
@@ -62,7 +62,7 @@ export function Footer() {
             </div>
           </div>
           <FooterCol title="Quick Links" items={["Home", "Outstation", "Packages", "My Bookings", "FAQ"]} />
-          <FooterCol title="Services" items={["Outstation Cabs", "Local Rentals", "Airport Transfer", "Tour Packages", "Corporate Travel"]} />
+          <FooterCol title="Services" items={["Outstation Cabs", "Local Travel", "Airport Transfer", "Tour Packages", "Corporate Travel"]} />
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm text-white/80">
@@ -79,7 +79,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 text-center text-xs text-white/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-24 sm:pb-5 text-center text-xs text-white/60">
             © 2025 Manasvi Tours and Travels. All Rights Reserved.
           </div>
         </div>

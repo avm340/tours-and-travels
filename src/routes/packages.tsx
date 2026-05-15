@@ -3,21 +3,9 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { Calendar, Check, ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/packages")({
-  head: () => ({
-    meta: [
-      { title: "Maharashtra Tour Packages — Manasvi Tours and Travels" },
-      {
-        name: "description",
-        content:
-          "Curated tour packages across Maharashtra — Shirdi, Konkan, Ajanta-Ellora, Lonavala, Goa and more. Custom packages available.",
-      },
-      { property: "og:title", content: "Tour Packages — Manasvi Tours" },
-      { property: "og:description", content: "Explore Maharashtra with curated tour packages." },
-    ],
-  }),
   component: PackagesPage,
 });
 
@@ -76,6 +64,13 @@ const categories: Cat[] = ["All", "Pilgrimage", "Adventure", "Family", "Corporat
 function PackagesPage() {
   const [active, setActive] = useState<Cat>("All");
   const filtered = active === "All" ? packages : packages.filter((p) => p.cat === active);
+
+  useEffect(() => {
+    document.title = "Maharashtra Tour Packages — Manasvi Tours and Travels";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Curated tour packages across Maharashtra — Shirdi, Konkan, Ajanta-Ellora, Lonavala, Goa and more. Custom packages available.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-background animate-fade-in">
       <Navbar />

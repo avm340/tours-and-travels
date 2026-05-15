@@ -9,31 +9,24 @@ import { WhyUs } from "@/components/site/WhyUs";
 import { Deals } from "@/components/site/Deals";
 import { Eligibility } from "@/components/site/Eligibility";
 import { Testimonials } from "@/components/site/Testimonials";
-import { AppBanner } from "@/components/site/AppBanner";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
+import { useEffect } from "react";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Manasvi Tours and Travels — Self Drive Car Rental from ₹999/day" },
-      {
-        name: "description",
-        content:
-          "Rent self-drive & chauffeur cars across Maharashtra. Zero deposit, unlimited km, doorstep delivery. Book in minutes with Manasvi Tours and Travels.",
-      },
-      { property: "og:title", content: "Manasvi Tours and Travels — Car Rental" },
-      {
-        property: "og:description",
-        content: "Self-drive & chauffeur cars from ₹999/day. Zero deposit. Doorstep delivery.",
-      },
-    ],
-  }),
-  component: Index,
-});
+export const Route = createFileRoute("/")(
+  {
+    component: Index,
+  },
+);
 
 function Index() {
+  useEffect(() => {
+    document.title = "Manasvi Tours and Travels — Outstation Cabs & Tour Packages from ₹899";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Chauffeur-driven outstation cabs & curated tour packages across Maharashtra. Transparent pricing, verified drivers, 24/7 support. Book in 60 seconds with Manasvi Tours and Travels.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-background animate-fade-in">
       <Navbar />
@@ -47,7 +40,6 @@ function Index() {
         <Reveal variant="zoom"><Deals /></Reveal>
         <Reveal variant="left"><Eligibility /></Reveal>
         <Reveal variant="up"><Testimonials /></Reveal>
-        <Reveal variant="zoom"><AppBanner /></Reveal>
         <Reveal variant="up"><Faq /></Reveal>
       </main>
       <Footer />

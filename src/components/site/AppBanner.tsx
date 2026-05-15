@@ -29,15 +29,14 @@ export function AppBanner() {
             </button>
           </div>
         </div>
-        <div className="relative flex justify-center">
-          <div className="absolute inset-0 bg-brand/30 blur-3xl rounded-full" />
+        <div className="relative flex justify-center mt-10 lg:mt-0">
           <img
             src={appMockup}
             alt="Manasvi app on phone"
             loading="lazy"
             width={500}
             height={500}
-            className="relative max-w-sm w-full drop-shadow-2xl"
+            className="relative max-w-sm w-full drop-shadow-2xl float-slow"
           />
         </div>
       </div>

@@ -1,18 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { Search, MessageCircle, Phone, MapPin, Calendar, Car, User, Star, CheckCircle2, History } from "lucide-react";
-import { useState } from "react";
+import { Search, MessageCircle, Phone, MapPin, Calendar, Car, Star, CheckCircle2, History } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/bookings")({
-  head: () => ({
-    meta: [
-      { title: "Track Your Booking — Manasvi Tours and Travels" },
-      { name: "description", content: "Look up your booking by ID or registered mobile number." },
-      { property: "og:title", content: "My Bookings — Manasvi Tours" },
-      { property: "og:description", content: "Track your trip in real time." },
-    ],
-  }),
   component: BookingsPage,
 });
 
@@ -32,6 +24,12 @@ function BookingsPage() {
   const [tab, setTab] = useState<"track" | "history">("track");
   const [query, setQuery] = useState("");
   const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    document.title = "Track Your Booking — Manasvi Tours and Travels";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Look up your booking by ID or registered mobile number. Track your trip in real time.");
+  }, []);
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">
@@ -168,7 +166,8 @@ function BookingsPage() {
 
           {tab === "history" && (
             <div className="bg-card border rounded-2xl overflow-hidden shadow-lg">
-              <div className="overflow-x-auto">
+              {/* Desktop table */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="bg-soft text-left">
                     <tr>
@@ -195,6 +194,24 @@ function BookingsPage() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+              {/* Mobile cards */}
+              <div className="sm:hidden divide-y">
+                {recent.map((r) => (
+                  <div key={r.id} className="p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-navy">{r.id}</span>
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor[r.status]}`}>
+                        {r.status}
+                      </span>
+                    </div>
+                    <p className="text-sm">{r.route}</p>
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>{r.date}</span>
+                      <span>{r.car}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
