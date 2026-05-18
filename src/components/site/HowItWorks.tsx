@@ -3,7 +3,7 @@ import { Search, ClipboardCheck, CreditCard, Car } from "lucide-react";
 const steps = [
   { icon: Search, title: "Search", desc: "Select trip type, city, dates & car" },
   { icon: ClipboardCheck, title: "Confirm", desc: "Review fare, choose car tier" },
-  { icon: CreditCard, title: "Pay", desc: "Pay online or cash — no advance needed" },
+  { icon: CreditCard, title: "Pay", desc: "Pay online or cash" },
   { icon: Car, title: "Travel", desc: "Driver arrives at your doorstep!" },
 ];
 

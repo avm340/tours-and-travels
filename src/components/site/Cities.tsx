@@ -1,12 +1,13 @@
+import { MapPin } from "lucide-react";
+
 const cities = [
-  { name: "Mumbai", trips: "320+", img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=70" },
-  { name: "Pune", trips: "240+", img: "https://images.unsplash.com/photo-1567606940710-7a36f5d33b14?auto=format&fit=crop&w=600&q=70" },
-  { name: "Nashik", trips: "110+", img: "https://images.unsplash.com/photo-1587135941948-670b381f08ce?auto=format&fit=crop&w=600&q=70" },
-  { name: "Aurangabad", trips: "90+", img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=70" },
-  { name: "Nagpur", trips: "130+", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=70" },
-  { name: "Kolhapur", trips: "70+", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=70" },
-  { name: "Solapur", trips: "60+", img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=70" },
-  { name: "Shirdi", trips: "150+", img: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=70" },
+  { name: "Mumbai",         trips: "320+", img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=70" },
+  { name: "Pune",           trips: "240+", img: "/cars/touritst%20spots/Gemini_Generated_Image_3ddyls3ddyls3ddy.png" },
+  { name: "Nashik",         trips: "110+", img: "/cars/touritst%20spots/Gemini_Generated_Image_lclalrlclalrlcla.png" },
+  { name: "Goa",            trips: "130+", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=70" },
+  { name: "Lonavala",       trips: "180+", img: "/cars/touritst%20spots/Gemini_Generated_Image_7926hc7926hc7926.png" },
+  { name: "Shirdi",         trips: "150+", img: "/cars/touritst%20spots/Gemini_Generated_Image_wlyougwlyougwlyo.png" },
+  { name: "Mahabaleshwar",  trips: "160+", img: "/cars/touritst%20spots/Gemini_Generated_Image_btfn7cbtfn7cbtfn.png" },
 ];
 
 export function Cities() {
@@ -14,25 +15,17 @@ export function Cities() {
     <section id="cities" className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-10">
-          <h2 className="text-2xl sm:text-4xl font-bold text-navy">We Operate Across Maharashtra & Beyond</h2>
-          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground">Book a cab from any of these cities</p>
+          <h2 className="text-2xl sm:text-4xl font-bold text-navy">From Mumbai to Anywhere in India</h2>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground">Book a cab to any of these popular destinations</p>
         </div>
 
         {/* Mobile: horizontal scroll carousel */}
         <div className="sm:hidden -mx-4 px-4">
           <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide after:content-[''] after:w-1 after:shrink-0">
             {cities.map((c) => (
-              <div
-                key={c.name}
-                className="snap-start shrink-0 w-[140px] rounded-xl overflow-hidden border bg-card group"
-              >
+              <div key={c.name} className="snap-start shrink-0 w-[140px] rounded-xl overflow-hidden border bg-card group">
                 <div className="aspect-square overflow-hidden">
-                  <img
-                    src={c.img}
-                    alt={c.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+                  <img src={c.img} alt={c.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
                 <div className="p-2.5 text-center">
                   <h3 className="font-bold text-navy text-sm">{c.name}</h3>
@@ -40,23 +33,21 @@ export function Cities() {
                 </div>
               </div>
             ))}
+            {/* Many More – mobile */}
+            <div className="snap-start shrink-0 w-[140px] rounded-xl overflow-hidden border bg-gradient-to-br from-navy to-brand text-white flex flex-col items-center justify-center p-4 text-center gap-2">
+              <MapPin className="h-7 w-7 opacity-80" />
+              <p className="font-bold text-sm leading-tight">& Many More</p>
+              <p className="text-[10px] opacity-70">Ask us for your city</p>
+            </div>
           </div>
         </div>
 
         {/* Desktop: 4-col grid */}
         <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {cities.map((c) => (
-            <div
-              key={c.name}
-              className="rounded-xl overflow-hidden border bg-card hover:shadow-xl transition group"
-            >
+            <div key={c.name} className="rounded-xl overflow-hidden border bg-card hover:shadow-xl transition group">
               <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={c.img}
-                  alt={c.name}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+                <img src={c.img} alt={c.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="p-4">
                 <h3 className="font-bold text-navy">{c.name}</h3>
@@ -64,8 +55,15 @@ export function Cities() {
               </div>
             </div>
           ))}
+          {/* Many More – desktop (8th card) */}
+          <div className="rounded-xl border bg-gradient-to-br from-navy to-brand text-white flex flex-col items-center justify-center p-6 text-center gap-3 hover:shadow-xl transition hover:-translate-y-1">
+            <MapPin className="h-10 w-10 opacity-80" />
+            <h3 className="text-lg font-bold">& Many More</h3>
+            <p className="text-sm text-white/70">Don't see your city? Ask us — we go anywhere!</p>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+

@@ -6,7 +6,7 @@ const deals = [
     icon: PartyPopper,
     title: "First Ride",
     desc: "15% off for new users",
-    code: "MANASVI15",
+    code: "MANASVI5",
   },
   {
     icon: CalendarHeart,
@@ -35,7 +35,7 @@ function useCountdown(seconds: number) {
 }
 
 export function Deals() {
-  const time = useCountdown(60 * 60 * 12);
+  const time = useCountdown(60 * 60);
   return (
     <section className="py-12 sm:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -67,9 +67,8 @@ export function Deals() {
 function DealCard({ d, time, mobile }: { d: (typeof deals)[number]; time: string; mobile?: boolean }) {
   return (
     <div
-      className={`rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-navy to-brand text-white relative overflow-hidden hover:-translate-y-1 transition shadow-lg ${
-        mobile ? "snap-start shrink-0 w-[240px]" : ""
-      }`}
+      className={`rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-navy to-brand text-white relative overflow-hidden hover:-translate-y-1 transition shadow-lg ${mobile ? "snap-start shrink-0 w-[240px]" : ""
+        }`}
     >
       <div className="absolute -top-10 -right-10 h-40 w-40 bg-brand-light/20 rounded-full blur-2xl" />
       <d.icon className="h-7 w-7 sm:h-9 sm:w-9 text-brand-light" />

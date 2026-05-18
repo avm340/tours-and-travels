@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Compass, Phone } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { bookOnWhatsApp } from "@/lib/whatsapp";
 
 type NavLink = { label: string; to?: string; href?: string };
 
 const links: NavLink[] = [
   { label: "Home", to: "/" },
   { label: "Our Fleet", href: "/#cars" },
+  { label: "About", to: "/about" },
   { label: "Outstation", to: "/outstation" },
   { label: "Packages", to: "/packages" },
-  { label: "My Bookings", to: "/bookings" },
-  { label: "Contact", href: "/#footer" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export function Navbar() {
@@ -55,16 +56,14 @@ export function Navbar() {
         </nav>
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="tel:+919876543210"
+            href="tel:+919821790471"
             className="flex items-center gap-1.5 text-sm text-brand-light hover:text-white transition"
           >
             <Phone className="h-4 w-4" />
-            <span className="font-medium">+91 98765 43210</span>
+            <span className="font-medium">+91 98217 90471</span>
           </a>
-          <button className="px-4 py-2 text-sm rounded-md border border-white/40 hover:bg-white/10 transition">
-            Login / Sign Up
-          </button>
-          <button className="pulse-cta px-4 py-2 text-sm rounded-md bg-brand hover:bg-brand/90 font-medium transition">
+
+          <button onClick={() => bookOnWhatsApp({})} className="pulse-cta px-4 py-2 text-sm rounded-md bg-brand hover:bg-brand/90 font-medium transition">
             Book Now
           </button>
         </div>
@@ -77,13 +76,13 @@ export function Navbar() {
         </button>
       </div>
       {open && (
-        <div className="lg:hidden bg-navy border-t border-white/10 px-4 py-4 space-y-3">
-          {links.map((l) => renderLink(l, () => setOpen(false), "block text-sm py-1 hover:text-brand-light"))}
-          <div className="flex gap-3 pt-2">
-            <button className="flex-1 px-4 py-2 text-sm rounded-md border border-white/40">
-              Login
+        <div className="lg:hidden absolute top-16 inset-x-0 bg-navy/95 backdrop-blur-md border-b border-white/10 px-4 py-6 space-y-4 shadow-2xl animate-fade-in">
+          {links.map((l) => renderLink(l, () => setOpen(false), "block text-base sm:text-lg py-2 font-medium hover:text-brand-light border-b border-white/5 last:border-0"))}
+          <div className="flex gap-3 pt-4">
+
+            <button onClick={() => bookOnWhatsApp({})} className="flex-1 px-4 py-3 text-sm font-semibold rounded-md bg-brand hover:bg-brand/90 transition shadow-lg shadow-brand/20">
+              Book Now
             </button>
-            <button className="flex-1 px-4 py-2 text-sm rounded-md bg-brand">Book Now</button>
           </div>
         </div>
       )}

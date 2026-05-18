@@ -9,11 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TncRouteImport } from './routes/tnc'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as OutstationRouteImport } from './routes/outstation'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookingsRouteImport } from './routes/bookings'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FleetCarIdRouteImport } from './routes/fleet.$carId'
 
+const TncRoute = TncRouteImport.update({
+  id: '/tnc',
+  path: '/tnc',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PackagesRoute = PackagesRouteImport.update({
   id: '/packages',
   path: '/packages',
@@ -24,9 +33,19 @@ const OutstationRoute = OutstationRouteImport.update({
   path: '/outstation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookingsRoute = BookingsRouteImport.update({
   id: '/bookings',
   path: '/bookings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,48 +53,72 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FleetCarIdRoute = FleetCarIdRouteImport.update({
+  id: '/fleet/$carId',
+  path: '/fleet/$carId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/bookings': typeof BookingsRoute
+  '/contact': typeof ContactRoute
   '/outstation': typeof OutstationRoute
   '/packages': typeof PackagesRoute
+  '/tnc': typeof TncRoute
+  '/fleet/$carId': typeof FleetCarIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/bookings': typeof BookingsRoute
+  '/contact': typeof ContactRoute
   '/outstation': typeof OutstationRoute
   '/packages': typeof PackagesRoute
+  '/tnc': typeof TncRoute
+  '/fleet/$carId': typeof FleetCarIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/bookings': typeof BookingsRoute
+  '/contact': typeof ContactRoute
   '/outstation': typeof OutstationRoute
   '/packages': typeof PackagesRoute
+  '/tnc': typeof TncRoute
+  '/fleet/$carId': typeof FleetCarIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bookings' | '/outstation' | '/packages'
+  fullPaths: '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bookings' | '/outstation' | '/packages'
-  id: '__root__' | '/' | '/bookings' | '/outstation' | '/packages'
+  to: '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
+  id: '__root__' | '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   BookingsRoute: typeof BookingsRoute
+  ContactRoute: typeof ContactRoute
   OutstationRoute: typeof OutstationRoute
   PackagesRoute: typeof PackagesRoute
+  TncRoute: typeof TncRoute
+  FleetCarIdRoute: typeof FleetCarIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   BookingsRoute: BookingsRoute,
+  ContactRoute: ContactRoute,
   OutstationRoute: OutstationRoute,
   PackagesRoute: PackagesRoute,
+  TncRoute: TncRoute,
+  FleetCarIdRoute: FleetCarIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-

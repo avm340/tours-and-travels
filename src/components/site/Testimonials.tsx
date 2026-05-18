@@ -1,9 +1,9 @@
 import { Star, Quote } from "lucide-react";
 
 const reviews = [
-  { name: "Rohan Sharma", city: "Mumbai", text: "Excellent service, clean car, on-time pickup! Will definitely book again with Manasvi for our next trip." },
-  { name: "Priya Deshmukh", city: "Pune", text: "Easy booking and transparent pricing — highly recommend Manasvi! The driver was professional and courteous." },
-  { name: "Amit Patil", city: "Nashik", text: "Best outstation cab experience in Maharashtra. Smooth pickup, transparent pricing, and great support throughout." },
+  { name: "Chandrakant Kadam", city: "Mumbai", text: "Excellent service and very professional driver. The car was clean, comfortable, and arrived on time. Highly recommended for outstation trips!" },
+  { name: "Sneha Patel", city: "Pune", text: "Our family trip was extremely comfortable because of their service. The driver was experienced and knew all the routes well." },
+  { name: "Sandeep Sagvekar", city: "Mumbai", text: "Highly satisfied with their corporate travel service. Always on time and very professional." },
 ];
 
 export function Testimonials() {
@@ -12,7 +12,7 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-10">
           <h2 className="text-2xl sm:text-4xl font-bold">What Our Travellers Say</h2>
-          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-white/70">Trusted by 12,000+ happy travellers across Maharashtra</p>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-white/70">Trusted by 10,000+ happy travellers across India</p>
         </div>
 
         {/* Mobile: horizontal scroll snap */}

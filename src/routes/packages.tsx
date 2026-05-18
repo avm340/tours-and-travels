@@ -4,6 +4,8 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { Calendar, Check, ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { setPageMeta } from "@/lib/meta";
+import { bookOnWhatsApp } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/packages")({
   component: PackagesPage,
@@ -66,9 +68,11 @@ function PackagesPage() {
   const filtered = active === "All" ? packages : packages.filter((p) => p.cat === active);
 
   useEffect(() => {
-    document.title = "Maharashtra Tour Packages — Manasvi Tours and Travels";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Curated tour packages across Maharashtra — Shirdi, Konkan, Ajanta-Ellora, Lonavala, Goa and more. Custom packages available.");
+    setPageMeta({
+      title: "India Tour Packages | Manasvi Tours",
+      description: "Curated tour packages across India — Shirdi, Konkan, Ajanta-Ellora, Lonavala, Goa and more. Custom packages available.",
+      url: "/packages"
+    });
   }, []);
 
   return (
@@ -80,7 +84,7 @@ function PackagesPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <Reveal variant="up">
               <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
-                Explore Maharashtra with <span className="text-brand-light">Curated Tour Packages</span>
+                Explore India with <span className="text-brand-light">Curated Tour Packages</span>
               </h1>
               <p className="mt-4 text-white/80 max-w-2xl">
                 Hand-crafted itineraries — pilgrimage, adventure, family, corporate & honeymoon.
@@ -147,7 +151,7 @@ function CustomPackageForm() {
     const msg = encodeURIComponent(
       `Hi Manasvi Tours!%0A%0AName: ${name}%0AWhatsApp: ${phone}%0ADestination: ${destination}%0ADate: ${date}%0A%0APlease share a custom package quote.`
     );
-    window.open(`https://wa.me/919876543210?text=${msg}`, "_blank");
+    window.open(`https://wa.me/919821790471?text=${msg}`, "_blank");
   };
   return (
     <form
@@ -155,7 +159,7 @@ function CustomPackageForm() {
       className="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-5 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-4"
     >
       <Input label="Name" placeholder="Your full name" value={name} onChange={(e) => setName(e.target.value)} required />
-      <Input label="WhatsApp Number" placeholder="+91 9876543210" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+      <Input label="WhatsApp Number" placeholder="+91 9821790471" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
       <Input label="Destination" placeholder="Konkan / Goa / Open" value={destination} onChange={(e) => setDestination(e.target.value)} required />
       <Input label="Travel Date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
       <button
@@ -228,7 +232,7 @@ function PackageCard({ p }: { p: Pkg }) {
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button className="py-2 rounded-md border border-navy text-navy text-sm font-medium hover:bg-navy hover:text-navy-foreground transition">View Itinerary</button>
-          <button className="py-2 rounded-md bg-brand text-brand-foreground text-sm font-medium hover:bg-brand/90 transition flex items-center justify-center gap-1">
+          <button onClick={() => bookOnWhatsApp({ package: p.name })} className="py-2 rounded-md bg-brand text-brand-foreground text-sm font-medium hover:bg-brand/90 transition flex items-center justify-center gap-1">
             Book Now <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>

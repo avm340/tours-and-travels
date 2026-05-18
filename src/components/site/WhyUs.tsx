@@ -1,7 +1,7 @@
 import { CarFront, MapPin, Lock, Shield, Sparkles, Phone } from "lucide-react";
 
 const features = [
-  { icon: CarFront, title: "1000+ Verified Cabs", desc: "Largest chauffeur fleet across Maharashtra" },
+  { icon: CarFront, title: "Premium Verified Cabs", desc: "Reliable chauffeur fleet for your journey" },
   { icon: MapPin, title: "GPS Tracked", desc: "Live tracking for peace of mind" },
   { icon: Lock, title: "No Hidden Charges", desc: "Transparent pricing, always" },
   { icon: Shield, title: "Safe & Insured", desc: "All vehicles insured, drivers verified" },

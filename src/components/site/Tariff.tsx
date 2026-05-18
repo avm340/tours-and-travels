@@ -1,4 +1,6 @@
 import { Clock, Sun, Route, Plane, Check, X } from "lucide-react";
+import { bookOnWhatsApp } from "@/lib/whatsapp";
+import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 
 const plans = [
   {
@@ -99,13 +101,14 @@ function PlanCard({ p, mobile }: { p: (typeof plans)[number]; mobile?: boolean }
         ))}
       </ul>
       <button
+        onClick={() => bookOnWhatsApp({ tripType: p.name })}
         className={`mt-5 w-full py-2.5 rounded-md font-medium text-sm transition ${
           p.popular
             ? "bg-brand text-brand-foreground hover:bg-brand/90"
             : "bg-navy text-navy-foreground hover:bg-navy/90"
         }`}
       >
-        Choose Plan
+        <WhatsAppIcon className="inline-block h-4 w-4 mr-1.5 align-middle" /> Choose Plan
       </button>
     </div>
   );

@@ -2,8 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { MapPin, Clock, ArrowRight, Users, Check, X, Search, Car, ClipboardCheck, UserCheck } from "lucide-react";
+import { ShieldCheck, MapPin, Search, Calendar as CalIcon, MessageCircle, Users, ClipboardCheck, UserCheck, Clock, ArrowRight, Check, X, Car } from "lucide-react";
+import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useState, useEffect } from "react";
+import { setPageMeta } from "@/lib/meta";
+import { bookOnWhatsApp } from "@/lib/whatsapp";
+import { PriceCalculator } from "@/components/site/PriceCalculator";
 
 export const Route = createFileRoute("/outstation")({
   component: OutstationPage,
@@ -12,10 +16,15 @@ export const Route = createFileRoute("/outstation")({
 const routes = [
   { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100, popular: true },
   { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3300, popular: true },
+  { from: "Mumbai", to: "Goa", km: 590, hr: "9", price: 8200, popular: true },
+  { from: "Mumbai", to: "Lonavala", km: 83, hr: "1.5", price: 1200, popular: false },
+  { from: "Mumbai", to: "Mahabaleshwar", km: 260, hr: "5", price: 3700, popular: false },
   { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2400, popular: false },
-  { from: "Pune", to: "Goa", km: 460, hr: "7", price: 6500, popular: false },
-  { from: "Mumbai", to: "Aurangabad", km: 340, hr: "5.5", price: 4800, popular: false },
-  { from: "Pune", to: "Shirdi", km: 190, hr: "3.5", price: 2700, popular: false },
+  { from: "Mumbai", to: "Nagpur", km: 870, hr: "13", price: 12000, popular: false },
+  { from: "Mumbai", to: "Kolhapur", km: 380, hr: "6", price: 5400, popular: false },
+  { from: "Pune", to: "Mahabaleshwar", km: 120, hr: "2.5", price: 1700, popular: false },
+  { from: "Pune", to: "Kolhapur", km: 230, hr: "4", price: 3200, popular: false },
+  { from: "Mumbai", to: "Alibag", km: 100, hr: "2", price: 1500, popular: false },
 ];
 
 const fleet = [
@@ -40,11 +49,48 @@ const exclusions = [
 function OutstationPage() {
   const [round, setRound] = useState(false);
 
+  const [toCity, setToCity] = useState("");
+  const [date, setDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [passengers, setPassengers] = useState("1");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const minDate = new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString().slice(0, 16);
+
   useEffect(() => {
-    document.title = "Outstation Cabs from Mumbai & Pune — Manasvi Tours and Travels";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Book chauffeur-driven outstation cabs across Maharashtra. Sedan, SUV & luxury cars from ₹14/km. Transparent pricing, on-time pickup.");
+    setPageMeta({
+      title: "Outstation Cabs from Mumbai & Pune | Manasvi Tours",
+      description: "Book chauffeur-driven outstation cabs across India. Sedan, SUV & luxury cars from ₹14/km. Transparent pricing, on-time pickup.",
+      url: "/outstation"
+    });
   }, []);
+
+  const handleSearch = () => {
+    const newErrors: Record<string, string> = {};
+    if (!toCity.trim()) newErrors.toCity = "Destination required";
+    else if (toCity.toLowerCase() === "mumbai") newErrors.toCity = "Destination cannot be Mumbai";
+    
+    if (!date) newErrors.date = "Pickup date required";
+    else if (date < minDate) newErrors.date = "Must be at least 12 hours from now";
+
+    if (round) {
+      if (!returnDate) newErrors.returnDate = "Return date required";
+      else if (date && new Date(returnDate) < new Date(date)) newErrors.returnDate = "Must be after pickup";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
+    
+    bookOnWhatsApp({
+      tripType: round ? "Outstation (Round Trip)" : "Outstation",
+      from: "Mumbai",
+      to: toCity,
+      date: date + (round && returnDate ? ` to ${returnDate}` : ""),
+      passengers,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background animate-fade-in">
@@ -59,25 +105,31 @@ function OutstationPage() {
                 Book Outstation Cab — <span className="text-brand-light">Comfortable, On Time, Affordable</span>
               </h1>
               <p className="mt-4 text-white/80 max-w-2xl">
-                Chauffeur-driven sedans, SUVs and luxury cars across Maharashtra and beyond.
+                Chauffeur-driven sedans, SUVs and luxury cars across India and beyond.
               </p>
             </Reveal>
             <div className="mt-8 bg-background text-foreground rounded-2xl shadow-2xl p-4 sm:p-6 float-soft">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-                <Field label="From"><input className="field" placeholder="Mumbai" /></Field>
-                <Field label="To"><input className="field" placeholder="Shirdi" /></Field>
-                <Field label="Pickup Date"><input className="field" type="date" /></Field>
-                <Field label={round ? "Return Date" : "Trip Type"}>
+                <Field label="From"><input className="field bg-muted text-muted-foreground cursor-not-allowed" value="Mumbai" readOnly /></Field>
+                <Field label="To" error={errors.toCity}><input className={`field ${errors.toCity ? 'border-red-500' : ''}`} placeholder="Anywhere in India" value={toCity} onChange={e => {setToCity(e.target.value); setErrors(p => ({...p, toCity: ''}))}} /></Field>
+                <Field label="Pickup Date" error={errors.date}><input className={`field ${errors.date ? 'border-red-500' : ''}`} type="datetime-local" min={minDate} value={date} onChange={e => {setDate(e.target.value); setErrors(p => ({...p, date: ''}))}} /></Field>
+                <Field label={round ? "Return Date" : "Trip Type"} error={errors.returnDate}>
                   {round ? (
-                    <input className="field" type="date" />
+                    <input className={`field ${errors.returnDate ? 'border-red-500' : ''}`} type="date" value={returnDate} onChange={e => {setReturnDate(e.target.value); setErrors(p => ({...p, returnDate: ''}))}} />
                   ) : (
                     <button onClick={() => setRound(true)} className="field text-left text-muted-foreground">One-Way (toggle round trip)</button>
                   )}
                 </Field>
                 <Field label="Passengers">
-                  <select className="field">
-                    <option>1-2</option><option>3-4</option><option>5-6</option><option>7+</option>
-                  </select>
+                  <input
+                    className="field"
+                    type="number"
+                    min={1}
+                    max={17}
+                    value={passengers}
+                    onChange={e => setPassengers(e.target.value)}
+                    placeholder="No. of passengers"
+                  />
                 </Field>
               </div>
               <div className="mt-4 flex items-center justify-between gap-4 flex-wrap">
@@ -85,8 +137,8 @@ function OutstationPage() {
                   <input type="checkbox" checked={round} onChange={(e) => setRound(e.target.checked)} />
                   Round Trip
                 </label>
-                <button className="bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg font-semibold px-6 h-12 flex items-center gap-2 transition">
-                  <Search className="h-5 w-5" /> Search Cabs
+                <button onClick={handleSearch} className="bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg font-semibold px-6 h-12 flex items-center gap-2 transition">
+                  <WhatsAppIcon className="h-5 w-5" /> Connect on WhatsApp
                 </button>
               </div>
             </div>
@@ -155,7 +207,7 @@ function OutstationPage() {
                     <Users className="h-4 w-4 text-brand" /> Up to {f.pax} passengers
                   </div>
                   <p className="mt-4 text-3xl font-bold text-brand">{f.rate}</p>
-                  <button className="mt-5 w-full py-2.5 rounded-md bg-navy text-navy-foreground font-medium hover:bg-navy/90 transition">
+                  <button onClick={() => bookOnWhatsApp({ car: f.tier, tripType: 'Outstation' })} className="mt-5 w-full py-2.5 rounded-md bg-navy text-navy-foreground font-medium hover:bg-navy/90 transition">
                     Book {f.tier}
                   </button>
                 </div>
@@ -163,6 +215,8 @@ function OutstationPage() {
             </div>
           </div>
         </section>
+
+        <Reveal variant="up"><PriceCalculator /></Reveal>
 
         {/* Inclusions / Exclusions */}
         <section className="py-12 sm:py-20">
@@ -195,11 +249,14 @@ function OutstationPage() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, error }: { label: string; children: React.ReactNode; error?: string }) {
   return (
     <label className="block">
-      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
+      <div className="flex justify-between items-end">
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
+      </div>
       <div className="mt-1.5">{children}</div>
+      {error && <p className="mt-1 text-[10px] text-red-500 font-medium">{error}</p>}
     </label>
   );
 }
@@ -240,7 +297,7 @@ function RouteCard({ r }: { r: { from: string; to: string; km: number; hr: strin
         ₹{price.toLocaleString()}
         <span className="text-sm font-normal text-muted-foreground"> starting</span>
       </p>
-      <button className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
+      <button onClick={() => bookOnWhatsApp({ from: r.from, to: r.to, tripType: trip === "round" ? "Outstation (Round Trip)" : "Outstation" })} className="mt-4 w-full py-2.5 rounded-md bg-brand text-brand-foreground font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition">
         Book This Route <ArrowRight className="h-4 w-4" />
       </button>
     </div>

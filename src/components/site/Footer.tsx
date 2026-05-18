@@ -1,4 +1,5 @@
-import { Compass, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, Lock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
+import { Compass, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, Clock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
+import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useState } from "react";
 
 export function Footer() {
@@ -7,7 +8,7 @@ export function Footer() {
     e.preventDefault();
     if (!phone.trim()) return;
     const msg = encodeURIComponent(`Hi! Please add ${phone} to WhatsApp deal alerts.`);
-    window.open(`https://wa.me/919876543210?text=${msg}`, "_blank");
+    window.open(`https://wa.me/919821790471?text=${msg}`, "_blank");
   };
 
   return (
@@ -24,7 +25,7 @@ export function Footer() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               type="tel"
-              placeholder="+91 9876543210"
+              placeholder="+91 9821790471"
               className="flex-1 md:w-64 h-11 px-3 rounded-lg bg-white/10 border border-white/30 placeholder:text-white/50 outline-none focus:border-brand-light text-sm"
             />
             <button
@@ -40,8 +41,8 @@ export function Footer() {
       {/* Trust badges row */}
       <section className="bg-near-black border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm text-white/80">
-          <TrustBadge icon={<Lock className="h-4 w-4" />} text="SSL Secured" />
-          <TrustBadge icon={<ShieldCheck className="h-4 w-4" />} text="100% Refund Guarantee" />
+          <TrustBadge icon={<Clock className="h-4 w-4" />} text="15+ Years Experience" />
+          <TrustBadge icon={<ShieldCheck className="h-4 w-4" />} text="Zero Hidden Charges" />
           <TrustBadge icon={<BadgeCheck className="h-4 w-4" />} text="Verified Drivers" />
           <TrustBadge icon={<FileCheck className="h-4 w-4" />} text="GST Registered" />
         </div>
@@ -61,26 +62,28 @@ export function Footer() {
               <a aria-label="YouTube" className="h-9 w-9 rounded-full bg-white/10 hover:bg-brand transition flex items-center justify-center" href="#"><Youtube className="h-4 w-4" /></a>
             </div>
           </div>
-          <FooterCol title="Quick Links" items={["Home", "Outstation", "Packages", "My Bookings", "FAQ"]} />
+          <FooterCol title="Quick Links" items={["Home", "Outstation", "Packages", "FAQ", "Terms & Conditions"]} />
           <FooterCol title="Services" items={["Outstation Cabs", "Local Travel", "Airport Transfer", "Tour Packages", "Corporate Travel"]} />
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm text-white/80">
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-light shrink-0" /><span>+91 98765 43210</span></li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-light shrink-0" /><span>+91 98217 90471</span></li>
               <li className="flex items-center gap-2 break-all"><Mail className="h-4 w-4 text-brand-light shrink-0" /><span>hello@manasvitours.com</span></li>
             </ul>
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/919821790471"
               target="_blank" rel="noreferrer"
               className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-md bg-green-600 hover:bg-green-500 text-white text-sm font-medium transition"
             >
-              <MessageCircle className="h-4 w-4" /> WhatsApp Us
+              <WhatsAppIcon className="h-4 w-4" /> WhatsApp Us
             </a>
           </div>
         </div>
         <div className="border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-24 sm:pb-5 text-center text-xs text-white/60">
-            © 2025 Manasvi Tours and Travels. All Rights Reserved.
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-24 sm:pb-5 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-white/60">
+            <span>© 2025 Manasvi Tours and Travels. All Rights Reserved.</span>
+            <span className="hidden sm:inline">·</span>
+            <a href="/tnc" className="hover:text-white transition underline underline-offset-2">Terms &amp; Conditions</a>
           </div>
         </div>
       </footer>
@@ -98,13 +101,20 @@ function TrustBadge({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 function FooterCol({ title, items }: { title: string; items: string[] }) {
+  const hrefs: Record<string, string> = {
+    "Home": "/",
+    "Outstation": "/outstation",
+    "Packages": "/packages",
+    "FAQ": "#faq",
+    "Terms & Conditions": "/tnc",
+  };
   return (
     <div>
       <h4 className="font-semibold mb-4">{title}</h4>
       <ul className="space-y-2 text-sm text-white/70">
         {items.map((i) => (
           <li key={i}>
-            <a href="#" className="hover:text-brand-light transition">{i}</a>
+            <a href={hrefs[i] ?? "#"} className="hover:text-brand-light transition">{i}</a>
           </li>
         ))}
       </ul>
