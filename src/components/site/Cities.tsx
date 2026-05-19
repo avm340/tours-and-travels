@@ -25,7 +25,7 @@ export function Cities() {
             {cities.map((c) => (
               <div key={c.name} className="snap-start shrink-0 w-[140px] rounded-xl overflow-hidden border bg-card group">
                 <div className="aspect-square overflow-hidden">
-                  <img src={c.img} alt={c.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={c.img} alt={`Cab service to ${c.name} from Mumbai - Manasvi Tours`} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
                 <div className="p-2.5 text-center">
                   <h3 className="font-bold text-navy text-sm">{c.name}</h3>
@@ -47,7 +47,7 @@ export function Cities() {
           {cities.map((c) => (
             <div key={c.name} className="rounded-xl overflow-hidden border bg-card hover:shadow-xl transition group">
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={c.img} alt={c.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={c.img} alt={`Cab service to ${c.name} from Mumbai - Manasvi Tours`} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="p-4">
                 <h3 className="font-bold text-navy">{c.name}</h3>

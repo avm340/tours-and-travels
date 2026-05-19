@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
-Sitemap: https://manasvitravel.com/sitemap.xml
+
+Sitemap: https://www.manasvitours.com/sitemap.xml
+
+# Disallow admin/internal paths if any
+Disallow: /bookings
