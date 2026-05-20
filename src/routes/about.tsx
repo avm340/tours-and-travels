@@ -13,10 +13,10 @@ export const Route = createFileRoute('/about')({
 });
 
 const highlights = [
-  { icon: Clock,       title: "15 Years of Experience",       desc: "Trusted by thousands of families and corporates since 2009." },
-  { icon: ShieldCheck, title: "Safety First",                 desc: "Every vehicle is well-maintained and every driver is professionally trained." },
-  { icon: Smile,       title: "Customer Satisfaction",        desc: "We go the extra mile to make every interaction seamless and stress-free." },
-  { icon: Banknote,    title: "Affordable Premium Travel",    desc: "Premium, hassle-free service at prices accessible to everyone." },
+  { icon: Clock, title: "15 Years of Experience", desc: "Trusted by thousands of families and corporates since 2009." },
+  { icon: ShieldCheck, title: "Safety First", desc: "Every vehicle is well-maintained and every driver is professionally trained." },
+  { icon: Smile, title: "Customer Satisfaction", desc: "We go the extra mile to make every interaction seamless and stress-free." },
+  { icon: Banknote, title: "Affordable Premium Travel", desc: "Premium, hassle-free service at prices accessible to everyone." },
 ];
 
 function About() {
@@ -63,7 +63,7 @@ function About() {
                 <div className="p-6 rounded-2xl bg-soft border">
                   <Star className="h-10 w-10 text-brand mx-auto mb-4" />
                   <div className="flex justify-center gap-1 mb-1">
-                    {[1,2,3,4].map(i => (
+                    {[1, 2, 3, 4].map(i => (
                       <span key={i} className="text-yellow-400 text-2xl">★</span>
                     ))}
                     <span className="text-gray-300 text-2xl">★</span>
@@ -82,13 +82,13 @@ function About() {
                   <span className="font-semibold text-navy">15 years of experience</span> in delivering safe, comfortable, and reliable chauffeur-driven car rental services. Over the years, we have built a reputation for excellence by putting our customers' comfort and safety at the heart of everything we do.
                 </p>
                 <p>
-                  We specialize in a wide range of travel services tailored to suit every need — whether it's a quick local trip, a planned outstation journey, a timely airport transfer, a professional corporate travel arrangement, or a fully customized journey designed around your preferences. Every trip is handled by our team of professional, well-trained drivers operating well-maintained vehicles, ensuring you travel in comfort and style every single time.
+                  We specialize in a wide range of travel services tailored to suit every need, whether it is a quick local trip, a planned outstation journey, a timely airport transfer, a professional corporate travel arrangement, or a fully customized journey designed around your preferences. Every trip is handled by our team of professional, well-trained drivers operating well-maintained vehicles, ensuring you travel in comfort and style every single time.
                 </p>
                 <p>
-                  At Manasvi Tours and Travels, we understand that a great journey is about more than just reaching your destination — it's about the experience along the way. That's why we place a strong emphasis on punctuality, ensuring you always reach on time, every time. Our commitment to customer satisfaction means we go the extra mile to make every interaction seamless and stress-free, from the moment you book to the moment you arrive.
+                  At Manasvi Tours and Travels, we understand that a great journey is about more than just reaching your destination, it is about the experience along the way. That's why we place a strong emphasis on punctuality, ensuring you always reach on time, every time. Our commitment to customer satisfaction means we go the extra mile to make every interaction seamless and stress-free, from the moment you book to the moment you arrive.
                 </p>
                 <p>
-                  We believe that premium travel should be accessible to everyone, which is why we offer hassle-free service at affordable prices — because a smooth, comfortable, and memorable journey shouldn't come at a premium.
+                  We believe that premium travel should be accessible to everyone, which is why we offer hassle-free service at affordable prices, because a smooth, comfortable, and memorable journey should not come at a premium.
                 </p>
                 <p className="text-xl font-semibold text-navy text-center pt-4 italic">
                   "Your Journey. Our Responsibility."

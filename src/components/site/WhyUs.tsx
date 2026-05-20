@@ -18,18 +18,20 @@ export function WhyUs() {
           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-white/70">Everything you need for a worry-free journey</p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 stagger-children">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="p-3 sm:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-light/40 transition group tilt-card"
-            >
-              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-brand text-brand-foreground flex items-center justify-center group-hover:scale-110 transition">
-                <f.icon className="h-4 w-4 sm:h-6 sm:w-6" />
+          {features.map((f) => {
+            return (
+              <div
+                key={f.title}
+                className="p-3 sm:p-6 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md shadow-lg shadow-black/10 hover:border-brand-light/40 hover:scale-[1.02] duration-300 transition group tilt-card"
+              >
+                <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-brand text-brand-foreground flex items-center justify-center group-hover:scale-110 transition">
+                  <f.icon className="h-4 w-4 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="mt-2 sm:mt-4 text-sm sm:text-lg font-semibold leading-tight">{f.title}</h3>
+                <p className="mt-0.5 sm:mt-1 text-[11px] sm:text-sm text-white/70 leading-tight">{f.desc}</p>
               </div>
-              <h3 className="mt-2 sm:mt-4 text-sm sm:text-lg font-semibold leading-tight">{f.title}</h3>
-              <p className="mt-0.5 sm:mt-1 text-[11px] sm:text-sm text-white/70 leading-tight">{f.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

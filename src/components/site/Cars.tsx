@@ -140,7 +140,7 @@ export function Cars() {
             >
               {/* Image carousel (outside Link so buttons work) */}
               <div className="relative">
-                <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-brand-light/95 text-navy text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full z-10">
+                <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-white/95 text-navy text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-sm z-10">
                   {c.category}
                 </span>
                 <Link to="/fleet/$carId" params={{ carId: c.id }} className="block">
