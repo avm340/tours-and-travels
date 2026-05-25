@@ -152,9 +152,9 @@ export function Hero() {
           <Counter icon={<Star className="h-4 w-4 sm:h-5 sm:w-5" />} value={<><CountUp to={4.8} decimals={1} />★</>} label="Average Rating" />
         </div>
 
-        {/* Mobile: horizontal scroll badges */}
-        <div className="sm:hidden mt-4 -mx-4 px-4">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+        {/* Mobile: 2x2 grid badges */}
+        <div className="sm:hidden mt-4">
+          <div className="grid grid-cols-2 gap-2">
             <Badge icon={<ShieldCheck className="h-3.5 w-3.5" />} text="Verified Drivers" />
             <Badge icon={<XCircle className="h-3.5 w-3.5" />} text="Free Cancellation" />
             <Badge icon={<Headphones className="h-3.5 w-3.5" />} text="24/7 Support" />
@@ -198,9 +198,9 @@ function Field({ label, children, error }: { label: string; children: React.Reac
 
 function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm text-white shrink-0 whitespace-nowrap">
-      <span className="text-brand-light">{icon}</span>
-      <span className="font-medium text-xs sm:text-sm">{text}</span>
+    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm text-white justify-center sm:justify-start">
+      <span className="text-brand-light shrink-0">{icon}</span>
+      <span className="font-medium text-xs sm:text-sm whitespace-nowrap">{text}</span>
     </div>
   );
 }

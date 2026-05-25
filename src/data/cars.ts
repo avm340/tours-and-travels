@@ -18,12 +18,12 @@ export const carsData: Car[] = [
     seats: 7,
     pricePerKm: 20,
     images: [
-      "/cars/innova-crysta-7-seater/innova-5.png",
-      "/cars/innova-crysta-7-seater/innova-1.png",
-      "/cars/innova-crysta-7-seater/innova-2.png",
-      "/cars/innova-crysta-7-seater/innova-3.png",
-      "/cars/innova-crysta-7-seater/innova-4.png",
-      "/cars/innova-crysta-7-seater/innova-6.png"
+      "/cars/innova-crysta-7-seater/innova-5.jpg",
+      "/cars/innova-crysta-7-seater/innova-1.jpg",
+      "/cars/innova-crysta-7-seater/innova-2.jpg",
+      "/cars/innova-crysta-7-seater/innova-3.jpg",
+      "/cars/innova-crysta-7-seater/innova-4.jpg",
+      "/cars/innova-crysta-7-seater/innova-6.jpg"
     ],
     features: ["Fully Air Conditioned", "Spacious Interior", "Music System", "Mobile Charging Points", "Clean & Hygienic Vehicle"],
     bestFor: ["Family Trips", "Outstation Trips", "Airport Transfers", "Corporate Tours"],
@@ -36,11 +36,11 @@ export const carsData: Car[] = [
     seats: 6,
     pricePerKm: 20,
     images: [
-      "/cars/innova-crysta-bucket-seats/bucket-2.png",
-      "/cars/innova-crysta-bucket-seats/bucket-3.png",
-      "/cars/innova-crysta-bucket-seats/bucket-4.png",
-      "/cars/innova-crysta-bucket-seats/bucket-5.png",
-      "/cars/innova-crysta-bucket-seats/bucket-1.png"
+      "/cars/innova-crysta-bucket-seats/bucket-2.jpg",
+      "/cars/innova-crysta-bucket-seats/bucket-3.jpg",
+      "/cars/innova-crysta-bucket-seats/bucket-4.jpg",
+      "/cars/innova-crysta-bucket-seats/bucket-5.jpg",
+      "/cars/innova-crysta-bucket-seats/bucket-1.jpg"
     ],
     features: ["Bucket Recliner Seats", "Fully Air Conditioned", "Premium Interior", "Music System", "Mobile Charging Points", "Clean & Hygienic Vehicle"],
     bestFor: ["Luxury Family Trips", "Corporate Tours", "Outstation Trips"],
@@ -53,11 +53,11 @@ export const carsData: Car[] = [
     seats: 7,
     pricePerKm: 17,
     images: [
-      "/cars/toyota-innova/innova-4.png",
-      "/cars/toyota-innova/innova-1.png",
-      "/cars/toyota-innova/innova-2.png",
-      "/cars/toyota-innova/innova-3.png",
-      "/cars/toyota-innova/innova-5.png"
+      "/cars/toyota-innova/innova-4.jpg",
+      "/cars/toyota-innova/innova-1.jpg",
+      "/cars/toyota-innova/innova-2.jpg",
+      "/cars/toyota-innova/innova-3.jpg",
+      "/cars/toyota-innova/innova-5.jpg"
     ],
     features: ["Air Conditioned", "Comfortable Seating", "Music System", "Ample Luggage Space", "Clean & Hygienic Vehicle"],
     bestFor: ["Family Trips", "Outstation Trips", "Pilgrimage Tours"],
@@ -70,12 +70,12 @@ export const carsData: Car[] = [
     seats: 7,
     pricePerKm: 16,
     images: [
-      "/cars/toyota-rumion/rumion-1.png",
-      "/cars/toyota-rumion/rumion-2.png",
-      "/cars/toyota-rumion/rumion-3.png",
-      "/cars/toyota-rumion/rumion-4.png",
-      "/cars/toyota-rumion/rumion-5.png",
-      "/cars/toyota-rumion/rumion-6.png"
+      "/cars/toyota-rumion/rumion-1.jpg",
+      "/cars/toyota-rumion/rumion-2.jpg",
+      "/cars/toyota-rumion/rumion-3.jpg",
+      "/cars/toyota-rumion/rumion-4.jpg",
+      "/cars/toyota-rumion/rumion-5.jpg",
+      "/cars/toyota-rumion/rumion-6.jpg"
     ],
     features: ["Air Conditioned", "Flexible Seating", "Music System", "Economical", "Clean & Hygienic Vehicle"],
     bestFor: ["Budget Family Trips", "Weekend Getaways", "Outstation Trips"],
@@ -88,10 +88,10 @@ export const carsData: Car[] = [
     seats: 16,
     pricePerKm: 32,
     images: [
-      "/cars/urbania/urbania-3.png",
-      "/cars/urbania/urbania-1.png",
-      "/cars/urbania/urbania-2.png",
-      "/cars/urbania/urbania-4.png",
+      "/cars/urbania/urbania-3.jpg",
+      "/cars/urbania/urbania-1.jpg",
+      "/cars/urbania/urbania-2.jpg",
+      "/cars/urbania/urbania-4.jpg",
       "/cars/urbania/urbania-5.jpg"
     ],
     features: ["Pushback Recliner Seats", "Fully Air Conditioned", "Premium Luxury Interior", "LED Ambient Lighting", "Music System / Screen", "Mobile Charging Points", "Spacious & Comfortable", "Clean & Hygienic Vehicle"],
@@ -105,10 +105,10 @@ export const carsData: Car[] = [
     seats: 5,
     pricePerKm: 14,
     images: [
-      "/cars/swift/swift-4.png",
-      "/cars/swift/swift-1.png",
-      "/cars/swift/swift-2.png",
-      "/cars/swift/swift-3.png"
+      "/cars/swift/swift-4.jpg",
+      "/cars/swift/swift-1.jpg",
+      "/cars/swift/swift-2.jpg",
+      "/cars/swift/swift-3.jpg"
     ],
     features: ["Air Conditioned", "Comfortable Seating", "Music System", "Economical", "Clean & Hygienic Vehicle"],
     bestFor: ["Couple Trips", "Solo Travel", "Business Trips", "Short Outstation Trips"],

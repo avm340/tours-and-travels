@@ -16,7 +16,7 @@ export function bookOnWhatsApp(params: WhatsAppParams) {
   } else if (params.package) {
     text = `Hi Manasvi Tours, I am interested in booking the "${params.package}" package.`;
   } else {
-    text = `Hi Manasvi Tours, I want to book a cab.`;
+    text = `Hi Manasvi Tours, I want to book a car.`;
     if (params.car) text += `\nCar: ${params.car}`;
     if (params.tripType) text += `\nTrip Type: ${params.tripType}`;
     if (params.from && params.to) text += `\nRoute: ${params.from} to ${params.to}`;

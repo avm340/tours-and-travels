@@ -1,4 +1,4 @@
-import { Compass, Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, Clock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
+import { Compass, Phone, Mail, MessageCircle, Clock, ShieldCheck, BadgeCheck, FileCheck, Send } from "lucide-react";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useState } from "react";
 
@@ -49,23 +49,25 @@ export function Footer() {
       </section>
 
       <footer id="footer" className="bg-near-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
-          <div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
+          {/* Brand Column */}
+          <div className="md:col-span-4 lg:col-span-3 flex flex-col justify-start">
             <div className="flex items-center gap-2 font-bold text-lg">
               <Compass className="h-6 w-6 text-brand-light" />
               <span>Manasvi Tours and Travels</span>
             </div>
             <p className="mt-3 text-sm text-white/70 italic">"Your Journey, Our Responsibility"</p>
-            <div className="flex gap-3 mt-5">
-              <a aria-label="Instagram" className="h-9 w-9 rounded-full bg-white/10 hover:bg-brand transition flex items-center justify-center" href="#"><Instagram className="h-4 w-4" /></a>
-              <a aria-label="Facebook" className="h-9 w-9 rounded-full bg-white/10 hover:bg-brand transition flex items-center justify-center" href="#"><Facebook className="h-4 w-4" /></a>
-              <a aria-label="YouTube" className="h-9 w-9 rounded-full bg-white/10 hover:bg-brand transition flex items-center justify-center" href="#"><Youtube className="h-4 w-4" /></a>
-            </div>
           </div>
-          <FooterCol title="Quick Links" items={["Home", "Outstation", "Packages", "FAQ", "Terms & Conditions"]} />
-          <FooterCol title="Services" items={["Outstation Cabs", "Local Travel", "Airport Transfer", "Tour Packages", "Corporate Travel"]} />
-          <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
+
+          {/* Quick Links & Services Columns (Side by Side on Mobile) */}
+          <div className="grid grid-cols-2 gap-4 md:col-span-4 lg:col-span-5">
+            <FooterCol title="Quick Links" items={["Home", "Outstation", "Packages", "FAQ", "Terms & Conditions"]} />
+            <FooterCol title="Services" items={["Outstation Cabs", "Local Travel", "Airport Transfer", "Tour Packages", "Corporate Travel"]} />
+          </div>
+
+          {/* Contact Column */}
+          <div className="md:col-span-4 lg:col-span-4">
+            <h4 className="font-semibold mb-4 text-white">Contact Us</h4>
             <ul className="space-y-3 text-sm text-white/80">
               <li className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-2">

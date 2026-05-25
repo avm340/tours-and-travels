@@ -1,6 +1,7 @@
 import { Clock, Sun, Route, Plane, Check, X } from "lucide-react";
 import { bookOnWhatsApp } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
+import { useRef, useEffect } from "react";
 
 const plans = [
   {
@@ -39,6 +40,15 @@ const plans = [
 ];
 
 export function Tariff() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Force reset scroll to start on mount to prevent half-scrolled views from browser cache
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = 0;
+    }
+  }, []);
+
   return (
     <section id="tariff" className="py-12 sm:py-20 bg-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -49,7 +59,10 @@ export function Tariff() {
 
         {/* Mobile: horizontal scroll snap */}
         <div className="sm:hidden -mx-4 px-4">
-          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide after:content-[''] after:w-1 after:shrink-0">
+          <div
+            ref={scrollRef}
+            className="flex gap-3 overflow-x-auto snap-x snap-mandatory pt-4 pb-4 scrollbar-hide after:content-[''] after:w-1 after:shrink-0"
+          >
             {plans.map((p) => (
               <PlanCard key={p.name} p={p} mobile />
             ))}
@@ -71,11 +84,11 @@ function PlanCard({ p, mobile }: { p: (typeof plans)[number]; mobile?: boolean }
   return (
     <div
       className={`relative rounded-2xl p-5 sm:p-6 bg-card border transition-all hover:-translate-y-1 hover:shadow-xl ${
-        p.popular ? "border-brand ring-2 ring-brand shadow-xl" : ""
+        p.popular ? "border-brand ring-2 ring-brand shadow-xl" : "border-border"
       } ${mobile ? "snap-start shrink-0 w-[260px]" : ""}`}
     >
       {p.popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-brand-foreground text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-brand-foreground text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full z-10 shadow-md">
           Most Popular
         </span>
       )}
