@@ -92,10 +92,35 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/bookings'
+    | '/contact'
+    | '/outstation'
+    | '/packages'
+    | '/tnc'
+    | '/fleet/$carId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
-  id: '__root__' | '/' | '/about' | '/bookings' | '/contact' | '/outstation' | '/packages' | '/tnc' | '/fleet/$carId'
+  to:
+    | '/'
+    | '/about'
+    | '/bookings'
+    | '/contact'
+    | '/outstation'
+    | '/packages'
+    | '/tnc'
+    | '/fleet/$carId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/bookings'
+    | '/contact'
+    | '/outstation'
+    | '/packages'
+    | '/tnc'
+    | '/fleet/$carId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -107,6 +132,67 @@ export interface RootRouteChildren {
   PackagesRoute: typeof PackagesRoute
   TncRoute: typeof TncRoute
   FleetCarIdRoute: typeof FleetCarIdRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/tnc': {
+      id: '/tnc'
+      path: '/tnc'
+      fullPath: '/tnc'
+      preLoaderRoute: typeof TncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/outstation': {
+      id: '/outstation'
+      path: '/outstation'
+      fullPath: '/outstation'
+      preLoaderRoute: typeof OutstationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings': {
+      id: '/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof BookingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/$carId': {
+      id: '/fleet/$carId'
+      path: '/fleet/$carId'
+      fullPath: '/fleet/$carId'
+      preLoaderRoute: typeof FleetCarIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {

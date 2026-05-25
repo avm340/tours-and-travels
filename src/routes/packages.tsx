@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -78,7 +78,40 @@ function PackagesPage() {
   return (
     <div className="min-h-screen bg-background animate-fade-in">
       <Navbar />
-      <main>
+      <main className="relative">
+        {/* Coming Soon Overlay */}
+        <div className="absolute inset-0 bg-background/60 backdrop-blur-md z-40 flex items-start justify-center pt-32 sm:pt-40 px-4">
+          <div className="max-w-md w-full bg-card/90 border border-border/80 backdrop-blur-lg rounded-2xl p-8 text-center shadow-2xl relative overflow-hidden float-soft">
+            <div className="pointer-events-none absolute -top-10 -left-10 w-40 h-40 rounded-full bg-brand/10 blur-2xl" />
+            <div className="pointer-events-none absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-brand-light/10 blur-2xl" />
+            
+            <div className="relative">
+              <span className="inline-block px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-semibold uppercase tracking-wider mb-4 border border-brand/20">
+                Coming Soon
+              </span>
+              <h2 className="text-3xl font-extrabold text-navy tracking-tight">Tour Packages</h2>
+              <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
+                We are currently introducing new updates and premium enhancements to our Tour Packages. Exciting new itineraries and travel plans are coming soon!
+              </p>
+              <div className="mt-6 flex flex-col gap-3">
+                <a
+                  href="https://wa.me/919821790471?text=Hi%20Manasvi%20Tours!%20I'm%20interested%20in%20inquiring%20about%20your%20Tour%20Packages."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-xl bg-brand text-brand-foreground font-semibold hover:bg-brand/90 transition shadow-lg shadow-brand/25 flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="h-5 w-5" /> Inquire via WhatsApp
+                </a>
+                <Link
+                  to="/"
+                  className="w-full py-3 px-4 rounded-xl bg-soft text-foreground font-semibold hover:bg-muted transition flex items-center justify-center"
+                >
+                  Back to Home
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
         <section className="relative pt-24 pb-12 sm:pt-32 sm:pb-20 bg-gradient-to-br from-navy via-navy to-near-black text-white overflow-hidden">
           <div className="pointer-events-none absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-brand-light/25 blur-3xl animate-blob" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6">

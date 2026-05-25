@@ -67,8 +67,19 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm text-white/80">
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-light shrink-0" /><span>+91 98217 90471</span></li>
-              <li className="flex items-center gap-2 break-all"><Mail className="h-4 w-4 text-brand-light shrink-0" /><span>hello@manasvitours.com</span></li>
+              <li className="flex flex-col gap-1.5">
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-brand-light shrink-0" />
+                  <a href="tel:+919821790471" className="hover:underline">+91 98217 90471</a>
+                </div>
+                <div className="flex items-center gap-2 pl-6">
+                  <a href="tel:+918169730810" className="hover:underline">+91 81697 30810</a>
+                </div>
+              </li>
+              <li className="flex items-center gap-2 break-all">
+                <Mail className="h-4 w-4 text-brand-light shrink-0" />
+                <a href="mailto:manasavitravels@gmail.com" className="hover:underline">manasavitravels@gmail.com</a>
+              </li>
             </ul>
             <a
               href="https://wa.me/919821790471"
