@@ -435,15 +435,12 @@ export function Hero() {
 
             {/* ── Time Picker ── */}
             <Field label="Pickup Time">
-              <div className="relative flex items-center">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand/60 pointer-events-none" />
-                <input
-                  type="time"
-                  value={selectedTime}
-                  onChange={(e) => setSelectedTime(e.target.value)}
-                  className="field w-full pl-9"
-                />
-              </div>
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={(e) => setSelectedTime(e.target.value)}
+                className="field w-full"
+              />
             </Field>
 
             {round && (

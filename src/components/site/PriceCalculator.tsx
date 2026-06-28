@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Calculator, Info, ArrowRight } from "lucide-react";
 
 const rates = [
-  { name: "Sedan (Swift, Dzire)", rate: 14 },
-  { name: "SUV (Innova, Rumion)", rate: 17 },
-  { name: "Premium SUV (Crysta)", rate: 20 },
-  { name: "Tempo Traveller", rate: 32 },
+  { name: "Sedan (Maruti Swift)", rate: 14 },
+  { name: "SUV (Toyota Rumion)", rate: 16 },
+  { name: "SUV (Toyota Innova)", rate: 18 },
+  { name: "Premium SUV (Innova Crysta)", rate: 20 },
+  { name: "Tempo Traveller (Force Urbania)", rate: 35 },
 ];
 const DRIVER_BATA = 300;
 
