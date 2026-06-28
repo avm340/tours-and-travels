@@ -269,7 +269,6 @@ export function Hero() {
               onClick={() => setRound((v) => !v)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${round ? "bg-brand" : "bg-muted"}`}
               aria-label="Toggle round trip"
-              aria-pressed={round}
             >
               <span
                 className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${round ? "translate-x-5" : "translate-x-0.5"}`}
