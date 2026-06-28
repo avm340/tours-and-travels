@@ -42,34 +42,7 @@ const CATEGORIES = [
   { value: "Tour Package", label: "Tour Package", icon: Package },
 ];
 
-/* ── Time slots ── */
-const TIME_SLOTS = (() => {
-  const slots: string[] = [];
-  for (let h = 0; h < 24; h++) {
-    for (const m of [0, 30]) {
-      const hh = h.toString().padStart(2, "0");
-      const mm = m.toString().padStart(2, "0");
-      slots.push(`${hh}:${mm}`);
-    }
-  }
-  return slots;
-})();
 
-function formatTime12(t: string) {
-  const [hStr, mStr] = t.split(":");
-  const h = parseInt(hStr);
-  const suffix = h >= 12 ? "PM" : "AM";
-  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return `${h12}:${mStr} ${suffix}`;
-}
-
-function getTimePeriod(t: string) {
-  const h = parseInt(t.split(":")[0]);
-  if (h < 6) return "Night";
-  if (h < 12) return "Morning";
-  if (h < 17) return "Afternoon";
-  return "Evening";
-}
 
 /* ── Calendar helpers ── */
 const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -97,11 +70,11 @@ export function Hero() {
 
   /* Calendar state */
   const [showCalendar, setShowCalendar] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
+
   const [calMonth, setCalMonth] = useState(new Date().getMonth());
   const [calYear, setCalYear] = useState(new Date().getFullYear());
   const calRef = useRef<HTMLDivElement>(null);
-  const timeRef = useRef<HTMLDivElement>(null);
+
 
   /* Autocomplete state */
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -125,7 +98,7 @@ export function Hero() {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (calRef.current && !calRef.current.contains(e.target as Node)) setShowCalendar(false);
-      if (timeRef.current && !timeRef.current.contains(e.target as Node)) setShowTimePicker(false);
+
       if (suggestRef.current && !suggestRef.current.contains(e.target as Node) &&
           toCityRef.current && !toCityRef.current.contains(e.target as Node)) setShowSuggestions(false);
     };
@@ -164,11 +137,7 @@ export function Hero() {
     if (isDateDisabled(day)) return;
     setSelectedDate(new Date(calYear, calMonth, day));
     setErrors(p => ({ ...p, date: "" }));
-    // After selecting date, show time picker
-    setTimeout(() => {
-      setShowCalendar(false);
-      setShowTimePicker(true);
-    }, 200);
+    setShowCalendar(false);
   };
 
   /* Build calendar grid */
@@ -466,50 +435,14 @@ export function Hero() {
 
             {/* ── Time Picker ── */}
             <Field label="Pickup Time">
-              <div className="relative" ref={timeRef}>
-                <button
-                  type="button"
-                  onClick={() => { setShowTimePicker(v => !v); setShowCalendar(false); }}
-                  className="field text-left flex items-center gap-2"
-                >
-                  <Clock className="h-4 w-4 text-brand/60 shrink-0" />
-                  <span>{formatTime12(selectedTime)}</span>
-                </button>
-
-                {showTimePicker && (
-                  <div className="time-dropdown absolute left-0 top-[calc(100%+4px)] bg-card border border-border rounded-xl shadow-2xl shadow-black/15 z-50 p-3 w-[260px]">
-                    <div className="max-h-[220px] overflow-y-auto space-y-0.5 scrollbar-hide">
-                      {(() => {
-                        let lastPeriod = "";
-                        return TIME_SLOTS.map(t => {
-                          const period = getTimePeriod(t);
-                          const showHeader = period !== lastPeriod;
-                          lastPeriod = period;
-                          const active = selectedTime === t;
-                          return (
-                            <div key={t}>
-                              {showHeader && (
-                                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground px-2 pt-2 pb-1">
-                                  {period}
-                                </div>
-                              )}
-                              <button
-                                onClick={() => { setSelectedTime(t); setShowTimePicker(false); }}
-                                className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
-                                  active
-                                    ? "bg-brand text-white font-semibold shadow-sm"
-                                    : "hover:bg-brand/10 text-foreground"
-                                }`}
-                              >
-                                {formatTime12(t)}
-                              </button>
-                            </div>
-                          );
-                        });
-                      })()}
-                    </div>
-                  </div>
-                )}
+              <div className="relative flex items-center">
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand/60 pointer-events-none" />
+                <input
+                  type="time"
+                  value={selectedTime}
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                  className="field w-full pl-9"
+                />
               </div>
             </Field>
 
