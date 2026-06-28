@@ -243,7 +243,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy/80 to-near-black/70" />
       <div className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 rounded-full bg-brand/30 blur-3xl animate-blob" />
       <div className="pointer-events-none absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-light/25 blur-3xl animate-blob" style={{ animationDelay: "-6s" }} />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-20 w-full animate-fade-up">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-20 w-full">
         <div className="max-w-3xl">
           <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-brand-light/20 text-brand-light text-xs sm:text-sm font-medium border border-brand-light/30 mb-4 sm:mb-6 shadow-sm">
             ⚡ Zero Hidden Charges · Verified Drivers
