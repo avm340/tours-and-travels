@@ -2,450 +2,300 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { MapPin, Users, ClipboardCheck, UserCheck, Clock, ArrowRight, Check, X, Car, ChevronDown, Phone, Shield, Fuel, IndianRupee, HelpCircle } from "lucide-react";
+import { MapPin, Users, Clock, ArrowRight, Check, Car, Phone, Shield, Fuel, IndianRupee, Navigation, Zap, Headphones, MapPinCheck } from "lucide-react";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useState, useEffect, useMemo } from "react";
 import { setPageMeta } from "@/lib/meta";
 import { bookOnWhatsApp } from "@/lib/whatsapp";
-import { PriceCalculator } from "@/components/site/PriceCalculator";
-import { carsData } from "@/data/cars";
 
 export const Route = createFileRoute("/outstation")({
   component: OutstationPage,
 });
 
-/* ── Route data ── */
-const routes = [
-  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", popular: true },
-  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", popular: true },
-  { from: "Mumbai", to: "Goa", km: 590, hr: "9", popular: true },
-  { from: "Mumbai", to: "Lonavala", km: 83, hr: "1.5", popular: false },
-  { from: "Mumbai", to: "Mahabaleshwar", km: 260, hr: "5", popular: false },
-  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", popular: false },
-  { from: "Mumbai", to: "Nagpur", km: 870, hr: "13", popular: false },
-  { from: "Mumbai", to: "Kolhapur", km: 380, hr: "6", popular: false },
-  { from: "Mumbai", to: "Alibag", km: 100, hr: "2", popular: false },
-  { from: "Mumbai", to: "Aurangabad", km: 330, hr: "5.5", popular: false },
-  { from: "Mumbai", to: "Solapur", km: 400, hr: "7", popular: false },
-  { from: "Mumbai", to: "Ratnagiri", km: 330, hr: "6", popular: false },
+/* ── Route Data ── */
+const ROUTES = [
+  { from: "Mumbai", to: "Pune", km: 150, hr: "2.5", price: 2100, popular: true },
+  { from: "Mumbai", to: "Shirdi", km: 240, hr: "4", price: 3360, popular: true },
+  { from: "Mumbai", to: "Goa", km: 590, hr: "9", price: 8260, popular: true },
+  { from: "Mumbai", to: "Lonavala", km: 83, hr: "1.5", price: 1162, popular: false },
+  { from: "Mumbai", to: "Mahabaleshwar", km: 260, hr: "5", price: 3640, popular: false },
+  { from: "Mumbai", to: "Nashik", km: 170, hr: "3", price: 2380, popular: false },
+  { from: "Mumbai", to: "Nagpur", km: 870, hr: "13", price: 12180, popular: false },
+  { from: "Mumbai", to: "Kolhapur", km: 380, hr: "6", price: 5320, popular: false },
+  { from: "Mumbai", to: "Alibag", km: 100, hr: "2", price: 1400, popular: false },
+  { from: "Mumbai", to: "Aurangabad", km: 330, hr: "5.5", price: 4620, popular: false },
+  { from: "Mumbai", to: "Ratnagiri", km: 330, hr: "6", price: 4620, popular: false },
+  { from: "Mumbai", to: "Solapur", km: 400, hr: "7", price: 5600, popular: false },
 ];
 
-/* ── Fleet data derived from cars.ts ── */
-const fleet = carsData
-  .filter(c => c.category !== "Tempo Traveller")
-  .map(c => ({
-    name: c.name,
-    category: c.category,
-    seats: c.seats,
-    rate: c.pricePerKm,
-    img: c.images[0],
-  }));
-
-const traveller = carsData.find(c => c.category === "Tempo Traveller");
-
-const inclusions = [
-  "Driver bata & allowances",
-  "Fuel charges included",
-  "Door-to-door pickup & drop",
-  "GPS tracked vehicles",
-  "24/7 on-trip support",
-  "All India permits",
+/* ── Fleet / Car Options ── */
+const FLEET = [
+  {
+    tier: "Sedan",
+    model: "Maruti Swift / Dzire",
+    pax: 4,
+    rate: 14,
+    features: ["AC", "Music System", "Ample Boot Space", "Economical"],
+    img: "/cars/swift/swift-4.jpg",
+  },
+  {
+    tier: "SUV",
+    model: "Toyota Innova / Rumion",
+    pax: 7,
+    rate: 18,
+    features: ["Spacious Interior", "AC", "Charging Points", "Family Friendly"],
+    img: "/cars/toyota-innova/innova-4.jpg",
+  },
+  {
+    tier: "Premium",
+    model: "Innova Crysta / Crysta Bucket",
+    pax: 7,
+    rate: 20,
+    features: ["Premium Comfort", "Recliner Seats", "AC", "Corporate Ready"],
+    img: "/cars/innova-crysta-7-seater/innova-5.jpg",
+  },
+  {
+    tier: "Luxury Van",
+    model: "Force Urbania Traveller",
+    pax: 16,
+    rate: 35,
+    features: ["Pushback Recliners", "LED Ambience", "AC", "Group Travel"],
+    img: "/cars/urbania/urbania-3.jpg",
+  },
 ];
-const exclusions = [
-  "Toll, parking & state permits",
-  "Night halt charges (₹300/night)",
-  "Sightseeing detours beyond route",
-  "GST (5%) as applicable",
+
+/* ── Steps ── */
+const STEPS = [
+  { n: 1, title: "Enter Route & Date", desc: "Pick your city, destination, and travel date.", icon: <MapPin className="h-5 w-5" /> },
+  { n: 2, title: "Choose Your Car", desc: "Sedan, SUV, Crysta or Traveller — pick your ride.", icon: <Car className="h-5 w-5" /> },
+  { n: 3, title: "Driver Picks You Up", desc: "Verified driver arrives at your doorstep. You ride, we drive.", icon: <Navigation className="h-5 w-5" /> },
 ];
 
-const faqs = [
-  { q: "What is the minimum booking distance?", a: "We have a minimum billing of 250 km per day for outstation trips. If your trip is shorter, you'll still be charged for 250 km." },
-  { q: "Is driver bata included in the fare?", a: "Yes! Driver bata (allowance) is included in all our outstation packages. You don't need to pay the driver separately." },
-  { q: "Can I book a one-way outstation cab?", a: "Absolutely. We offer both one-way and round-trip outstation cabs. One-way fares are calculated based on the actual distance." },
-  { q: "What happens if I need to cancel?", a: "Free cancellation up to 24 hours before pickup. Cancellations within 24 hours may attract a small fee. Contact us on WhatsApp for details." },
-  { q: "Are night charges applicable?", a: "Trips between 10 PM and 6 AM attract an additional ₹300 per night as night halt charges for the driver's rest." },
-  { q: "Do you provide AC cars for outstation?", a: "Yes, all our outstation vehicles are fully air-conditioned — from sedans to tempo travellers." },
+/* ── Trust Badges ── */
+const BADGES = [
+  { icon: <IndianRupee className="h-4 w-4" />, text: "Zero Hidden Charges" },
+  { icon: <Shield className="h-4 w-4" />, text: "Verified Drivers" },
+  { icon: <Check className="h-4 w-4" />, text: "Free Cancellation" },
+  { icon: <Headphones className="h-4 w-4" />, text: "24/7 Support" },
+  { icon: <MapPinCheck className="h-4 w-4" />, text: "GPS Tracked" },
 ];
 
 function OutstationPage() {
-  const [toCity, setToCity] = useState("");
+  const [from] = useState("Mumbai");
+  const [to, setTo] = useState("");
   const [date, setDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const [passengers, setPassengers] = useState("2");
-  const [round, setRound] = useState(false);
-  const [carFilter, setCarFilter] = useState<"all" | "sedan" | "suv" | "premium" | "tempo">("all");
+  const [tripType, setTripType] = useState<"one" | "round">("one");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const minDate = useMemo(() => {
-    const d = new Date(Date.now() + 12 * 60 * 60 * 1000);
-    return d.toISOString().slice(0, 10);
-  }, []);
+  const minDate = useMemo(() => new Date(Date.now() + 12 * 3600000).toISOString().slice(0, 10), []);
 
   useEffect(() => {
     setPageMeta({
-      title: "Outstation Cabs from Mumbai & Pune | Manasvi Tours",
-      description: "Book chauffeur-driven outstation cabs across India. Sedan, SUV & luxury cars from ₹14/km. Transparent pricing, verified drivers, on-time pickup.",
-      url: "/outstation"
+      title: "Outstation Cabs from Mumbai — Pay Per KM | Manasvi Tours",
+      description: "Book chauffeur-driven outstation cabs from Mumbai. Sedan from ₹14/km, SUV from ₹18/km. Zero hidden charges, verified drivers, 24/7 support.",
+      url: "/outstation",
     });
   }, []);
 
-  const handleSearch = () => {
-    const newErrors: Record<string, string> = {};
-    if (!toCity.trim()) newErrors.toCity = "Destination required";
-    if (!date) newErrors.date = "Pickup date required";
-    if (round && !returnDate) newErrors.returnDate = "Return date required";
-    else if (round && returnDate && new Date(returnDate) < new Date(date)) newErrors.returnDate = "Must be after pickup";
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  const handleBook = () => {
+    const errs: Record<string, string> = {};
+    if (!to.trim()) errs.to = "Drop city required";
+    if (!date) errs.date = "Date required";
+    if (Object.keys(errs).length) { setErrors(errs); return; }
     setErrors({});
-
     bookOnWhatsApp({
-      tripType: round ? "Outstation (Round Trip)" : "Outstation (One-Way)",
-      from: "Mumbai",
-      to: toCity,
-      date: date + (round && returnDate ? ` to ${returnDate}` : ""),
-      passengers,
+      tripType: tripType === "round" ? "Outstation (Round Trip)" : "Outstation (One-Way)",
+      from,
+      to,
+      date,
     });
   };
-
-  /* Price for route cards uses sedan baseline */
-  const sedanRate = carsData.find(c => c.category === "Sedan")?.pricePerKm ?? 14;
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main>
-        {/* ══════ Hero + Booking Form ══════ */}
-        <section className="relative pt-24 pb-14 sm:pt-32 sm:pb-24 bg-gradient-to-br from-navy via-navy to-near-black text-white overflow-hidden">
+        {/* ═══════════════════ HERO + BOOKING FORM ═══════════════════ */}
+        <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 bg-gradient-to-br from-navy via-navy to-near-black text-white overflow-hidden">
           <div className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 rounded-full bg-brand/30 blur-3xl animate-blob" />
           <div className="pointer-events-none absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-light/20 blur-3xl animate-blob" style={{ animationDelay: "-6s" }} />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <Reveal variant="up">
-              <div className="max-w-3xl">
-                <span className="inline-block px-3 py-1 rounded-full bg-brand-light/20 text-brand-light text-xs font-medium border border-brand-light/30 mb-4">
-                  ⚡ Door-to-Door · All India
-                </span>
-                <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
-                  Outstation Cabs from <span className="text-brand-light">Mumbai</span>
-                </h1>
-                <p className="mt-4 text-white/80 max-w-2xl text-base sm:text-lg">
-                  Chauffeur-driven sedans, SUVs & tempo travellers to 50+ destinations across India. Transparent per-km pricing, verified drivers, 24/7 support.
-                </p>
-              </div>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                Go Anywhere. <span className="text-brand-light">Pay Per KM.</span>
+              </h1>
+              <p className="mt-4 text-white/75 max-w-xl text-base sm:text-lg">
+                Chauffeur-driven cabs to 50+ destinations across India. Transparent per-km pricing, no surprises.
+              </p>
             </Reveal>
 
             {/* Booking Card */}
-            <div className="mt-8 bg-card text-foreground rounded-2xl shadow-2xl p-5 sm:p-7 border border-border/50">
-              <div className="flex items-center gap-2 mb-5">
-                <Car className="h-5 w-5 text-brand" />
-                <h2 className="font-bold text-navy text-lg">Book Your Outstation Cab</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Field label="From City">
+            <div className="mt-10 bg-card text-foreground rounded-2xl shadow-2xl border border-border/40 p-5 sm:p-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                <InputField label="Pickup City">
                   <input className="os-field bg-muted text-muted-foreground cursor-not-allowed" value="Mumbai" readOnly />
-                </Field>
-                <Field label="To City" error={errors.toCity}>
+                </InputField>
+                <InputField label="Drop City" error={errors.to}>
                   <input
-                    className={`os-field ${errors.toCity ? 'border-red-500' : ''}`}
-                    placeholder="e.g. Pune, Goa, Shirdi..."
-                    value={toCity}
-                    onChange={e => { setToCity(e.target.value); setErrors(p => ({ ...p, toCity: '' })); }}
+                    className={`os-field ${errors.to ? "border-red-500" : ""}`}
+                    placeholder="e.g. Pune, Goa, Shirdi"
+                    value={to}
+                    onChange={e => { setTo(e.target.value); setErrors(p => ({ ...p, to: "" })); }}
                   />
-                </Field>
-                <Field label="Pickup Date" error={errors.date}>
+                </InputField>
+                <InputField label="Pickup Date" error={errors.date}>
                   <input
-                    className={`os-field ${errors.date ? 'border-red-500' : ''}`}
+                    className={`os-field ${errors.date ? "border-red-500" : ""}`}
                     type="date"
                     min={minDate}
                     value={date}
-                    onChange={e => { setDate(e.target.value); setErrors(p => ({ ...p, date: '' })); }}
+                    onChange={e => { setDate(e.target.value); setErrors(p => ({ ...p, date: "" })); }}
                   />
-                </Field>
-                <Field label="Passengers">
-                  <input
-                    className="os-field"
-                    type="number"
-                    min={1}
-                    max={16}
-                    value={passengers}
-                    onChange={e => setPassengers(e.target.value)}
-                  />
-                </Field>
-              </div>
-
-              {/* Round trip toggle + return date */}
-              <div className="mt-4 flex flex-wrap items-center gap-4">
-                <label className="flex items-center gap-2 text-sm cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={round}
-                    onChange={(e) => setRound(e.target.checked)}
-                    className="accent-brand w-4 h-4"
-                  />
-                  <span className="font-medium text-foreground">Round Trip</span>
-                </label>
-                {round && (
-                  <div className="flex-1 min-w-[200px] max-w-xs">
-                    <Field label="Return Date" error={errors.returnDate}>
-                      <input
-                        className={`os-field ${errors.returnDate ? 'border-red-500' : ''}`}
-                        type="date"
-                        min={date || minDate}
-                        value={returnDate}
-                        onChange={e => { setReturnDate(e.target.value); setErrors(p => ({ ...p, returnDate: '' })); }}
-                      />
-                    </Field>
+                </InputField>
+                <InputField label="Trip Type">
+                  <div className="flex rounded-xl overflow-hidden border border-border h-[48px]">
+                    <button
+                      onClick={() => setTripType("one")}
+                      className={`flex-1 text-sm font-semibold transition-colors ${tripType === "one" ? "bg-brand text-white" : "bg-soft text-muted-foreground hover:bg-muted"}`}
+                    >
+                      One Way
+                    </button>
+                    <button
+                      onClick={() => setTripType("round")}
+                      className={`flex-1 text-sm font-semibold transition-colors ${tripType === "round" ? "bg-brand text-white" : "bg-soft text-muted-foreground hover:bg-muted"}`}
+                    >
+                      Round Trip
+                    </button>
                   </div>
-                )}
-              </div>
-
-              <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                </InputField>
                 <button
-                  onClick={handleSearch}
-                  className="flex-1 sm:flex-none bg-brand hover:bg-brand/90 text-brand-foreground rounded-xl font-semibold px-8 h-12 flex items-center justify-center gap-2 transition shadow-lg shadow-brand/25"
+                  onClick={handleBook}
+                  className="h-[48px] bg-brand hover:bg-brand/90 text-brand-foreground rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-brand/25"
                 >
-                  <WhatsAppIcon className="h-5 w-5" /> Get Quote on WhatsApp
+                  <WhatsAppIcon className="h-5 w-5" /> Check Price & Book
                 </button>
-                <a
-                  href="tel:+919821790471"
-                  className="flex-1 sm:flex-none border border-border rounded-xl font-semibold px-6 h-12 flex items-center justify-center gap-2 text-foreground hover:bg-soft transition"
-                >
-                  <Phone className="h-4 w-4" /> Call +91 98217 90471
-                </a>
               </div>
             </div>
           </div>
 
           <style>{`
             .os-field {
-              width: 100%; height: 48px; padding: 0 12px;
+              width: 100%; height: 48px; padding: 0 14px;
               border-radius: 0.75rem; background: var(--color-soft);
               border: 1px solid var(--color-border); font-size: 0.95rem;
-              color: var(--color-foreground); outline: none;
-              transition: border-color 0.2s;
+              color: var(--color-foreground); outline: none; transition: border-color 0.2s;
             }
             .os-field:focus { border-color: var(--color-brand); }
           `}</style>
         </section>
 
-        {/* ══════ Trust Bar ══════ */}
-        <section className="py-6 border-b border-border bg-soft">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-center gap-6 sm:gap-10 text-sm">
-            {[
-              { icon: <Shield className="h-4 w-4" />, text: "Verified Drivers" },
-              { icon: <Fuel className="h-4 w-4" />, text: "Fuel Included" },
-              { icon: <IndianRupee className="h-4 w-4" />, text: "No Hidden Charges" },
-              { icon: <Clock className="h-4 w-4" />, text: "On-Time Pickup" },
-              { icon: <Phone className="h-4 w-4" />, text: "24/7 Support" },
-            ].map(b => (
-              <div key={b.text} className="flex items-center gap-2 text-muted-foreground">
-                <span className="text-brand">{b.icon}</span>
-                <span className="font-medium">{b.text}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ══════ Popular Routes ══════ */}
-        <section className="py-14 sm:py-20">
+        {/* ═══════════════════ POPULAR ROUTES ═══════════════════ */}
+        <section className="py-16 sm:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <Reveal variant="up">
-              <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Popular Outstation Routes</h2>
-                <p className="mt-3 text-muted-foreground">Starting prices based on Sedan (₹{sedanRate}/km). SUV & Innova rates available on quote.</p>
+              <div className="text-center mb-12">
+                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Popular Routes</h2>
+                <p className="mt-3 text-muted-foreground">Starting prices shown for Sedan (₹14/km)</p>
               </div>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-              {routes.map((r) => (
-                <RouteCard key={r.from + r.to} r={r} sedanRate={sedanRate} />
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+              {ROUTES.map(r => (
+                <RouteCard key={r.to} r={r} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* ══════ How It Works ══════ */}
-        <section className="py-14 sm:py-20 bg-soft">
+        {/* ═══════════════════ FLEET / CAR OPTIONS ═══════════════════ */}
+        <section className="py-16 sm:py-24 bg-soft">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <Reveal variant="up">
-              <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-4xl font-bold text-navy">How Outstation Booking Works</h2>
-                <p className="mt-3 text-muted-foreground">Three simple steps. Confirmed in minutes.</p>
+              <div className="text-center mb-12">
+                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Choose Your Car</h2>
+                <p className="mt-3 text-muted-foreground">From budget sedans to luxury travellers</p>
               </div>
             </Reveal>
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="hidden md:block absolute top-10 left-[16%] right-[16%] h-0.5 bg-brand/20" />
-              <Step n={1} icon={<MapPin className="h-5 w-5" />} title="Share Your Trip" desc="Tell us your destination, date and passengers via WhatsApp or the form above." />
-              <Step n={2} icon={<ClipboardCheck className="h-5 w-5" />} title="Get Instant Quote" desc="We'll share the fare breakdown, car options, and driver details within 30 minutes." />
-              <Step n={3} icon={<UserCheck className="h-5 w-5" />} title="Ride & Enjoy" desc="Verified driver arrives on time. Track your ride via GPS. Pay after the trip." />
-            </div>
-          </div>
-        </section>
-
-        {/* ══════ Our Fleet ══════ */}
-        <section className="py-14 sm:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <Reveal variant="up">
-              <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Our Outstation Fleet</h2>
-                <p className="mt-3 text-muted-foreground">Choose from sedans, SUVs and tempo travellers</p>
-              </div>
-            </Reveal>
-
-            {/* Fleet filter pills */}
-            <div className="flex flex-wrap gap-2 justify-center mb-8">
-              {([
-                ["all", "All Cars"],
-                ["sedan", "Sedan"],
-                ["suv", "SUV"],
-                ["premium", "Premium SUV"],
-                ["tempo", "Tempo Traveller"],
-              ] as const).map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => setCarFilter(key)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    carFilter === key ? "bg-brand text-brand-foreground" : "bg-soft text-foreground hover:bg-brand/10"
-                  }`}
-                >
-                  {label}
-                </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {FLEET.map(f => (
+                <FleetCard key={f.tier} f={f} />
               ))}
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {carsData
-                .filter(c => {
-                  if (carFilter === "all") return true;
-                  if (carFilter === "sedan") return c.category === "Sedan";
-                  if (carFilter === "suv") return c.category === "SUV";
-                  if (carFilter === "premium") return c.category === "Premium SUV";
-                  if (carFilter === "tempo") return c.category === "Tempo Traveller";
-                  return true;
-                })
-                .map((c) => (
-                  <div key={c.id} className="rounded-2xl bg-card border overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all">
-                    <div className="h-48 overflow-hidden">
-                      <img src={c.images[0]} alt={c.name} className="w-full h-full object-cover" loading="lazy" width={400} height={200} />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-bold text-navy">{c.name}</h3>
-                        <span className="text-xs px-2 py-1 rounded-full bg-brand/10 text-brand font-medium">{c.category}</span>
-                      </div>
-                      <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {c.seats} seats</span>
-                      </div>
-                      <div className="mt-4 flex items-end justify-between">
-                        <p className="text-2xl font-bold text-brand">₹{c.pricePerKm}<span className="text-sm font-normal text-muted-foreground">/km</span></p>
-                        <button
-                          onClick={() => bookOnWhatsApp({ car: c.name, tripType: 'Outstation' })}
-                          className="px-4 py-2 rounded-lg bg-navy text-navy-foreground text-sm font-medium hover:bg-navy/90 transition flex items-center gap-1.5"
-                        >
-                          Book <ArrowRight className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
           </div>
         </section>
 
-        {/* ══════ Price Calculator ══════ */}
-        <Reveal variant="up"><PriceCalculator /></Reveal>
-
-        {/* ══════ Inclusions / Exclusions ══════ */}
-        <section className="py-14 sm:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
+        <section className="py-16 sm:py-24">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
             <Reveal variant="up">
-              <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Transparent Pricing</h2>
-                <p className="mt-3 text-muted-foreground">Know exactly what you're paying for</p>
+              <div className="text-center mb-12">
+                <h2 className="text-2xl sm:text-4xl font-bold text-navy">How It Works</h2>
+                <p className="mt-3 text-muted-foreground">Book in 60 seconds. Ride in comfort.</p>
               </div>
             </Reveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="rounded-2xl bg-card border p-6">
-                <h3 className="text-xl font-bold text-navy flex items-center gap-2">
-                  <Check className="h-5 w-5 text-brand" /> What's Included
-                </h3>
-                <ul className="mt-4 space-y-3 text-sm">
-                  {inclusions.map((i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <Check className="h-4 w-4 text-brand mt-0.5 shrink-0" /> {i}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-2xl bg-card border p-6">
-                <h3 className="text-xl font-bold text-navy flex items-center gap-2">
-                  <X className="h-5 w-5 text-red-400" /> What's Extra
-                </h3>
-                <ul className="mt-4 space-y-3 text-sm">
-                  {exclusions.map((i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-muted-foreground">
-                      <X className="h-4 w-4 mt-0.5 shrink-0 text-red-400" /> {i}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+            <div className="relative max-w-lg mx-auto md:max-w-none grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              {/* Connector line - Desktop */}
+              <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-brand/20" />
+              {/* Connector line - Mobile */}
+              <div className="md:hidden absolute top-8 bottom-8 left-[1.75rem] w-0.5 bg-brand/20" />
 
-        {/* ══════ FAQ ══════ */}
-        <section className="py-14 sm:py-20 bg-soft">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <Reveal variant="up">
-              <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-4xl font-bold text-navy">Frequently Asked Questions</h2>
-                <p className="mt-3 text-muted-foreground">Everything you need to know about outstation cabs</p>
-              </div>
-            </Reveal>
-            <div className="space-y-3">
-              {faqs.map((faq, i) => (
-                <div key={i} className="rounded-xl bg-card border overflow-hidden">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full flex items-center justify-between p-4 sm:p-5 text-left"
-                  >
-                    <span className="font-semibold text-navy text-sm sm:text-base pr-4">{faq.q}</span>
-                    <ChevronDown className={`h-5 w-5 text-brand shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
-                  </button>
-                  <div className={`overflow-hidden transition-all duration-300 ${openFaq === i ? "max-h-40" : "max-h-0"}`}>
-                    <p className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+              {STEPS.map(s => (
+                <div key={s.n} className="relative flex items-start md:block md:bg-card md:border md:rounded-2xl md:p-6 text-left md:text-center md:hover:-translate-y-1 md:hover:shadow-lg transition-all group">
+                  
+                  {/* Step Number Circle */}
+                  <div className="shrink-0 ml-1 mr-4 md:mx-auto h-12 w-12 md:h-14 md:w-14 rounded-full bg-brand text-brand-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-brand/30 ring-8 ring-background md:ring-0 relative z-10 mt-2 md:mt-0">
+                    {s.n}
                   </div>
+                  
+                  {/* Step Content */}
+                  <div className="flex-1 bg-card border md:border-none p-5 md:p-0 rounded-2xl md:rounded-none shadow-sm md:shadow-none md:mt-4 hover:shadow-md md:hover:shadow-none transition-shadow">
+                    <div className="inline-flex items-center gap-2 text-navy md:text-brand font-bold text-base md:text-sm">
+                      <span className="text-brand p-1.5 bg-brand/10 rounded-lg md:p-0 md:bg-transparent md:rounded-none">{s.icon}</span> {s.title}
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                  </div>
+
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ══════ CTA Banner ══════ */}
-        <section className="py-14 sm:py-20 bg-gradient-to-br from-navy via-navy to-near-black text-white overflow-hidden relative">
+        {/* ═══════════════════ TRUST BADGES ═══════════════════ */}
+        <section className="py-8 bg-soft border-y border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
+              {BADGES.map(b => (
+                <div key={b.text} className="flex items-center gap-2 text-sm font-medium text-foreground">
+                  <span className="text-brand">{b.icon}</span>
+                  {b.text}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════ CTA STRIP ═══════════════════ */}
+        <section className="py-16 sm:py-20 bg-gradient-to-br from-navy via-navy to-near-black text-white overflow-hidden relative">
           <div className="pointer-events-none absolute -top-20 -right-20 w-96 h-96 rounded-full bg-brand-light/15 blur-3xl animate-blob" />
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <Reveal variant="up">
-              <h2 className="text-2xl sm:text-4xl font-bold">Ready to Hit the Road?</h2>
-              <p className="mt-4 text-white/80 max-w-xl mx-auto">
-                Get a free, no-obligation quote for your outstation trip. We respond within 30 minutes on WhatsApp.
+              <h2 className="text-2xl sm:text-4xl font-bold">Need a Custom Route?</h2>
+              <p className="mt-4 text-white/75 max-w-lg mx-auto">
+                Going somewhere not listed? We cover all of India. Tell us your route and we'll share a quote within 30 minutes.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://wa.me/919821790471?text=Hi%20Manasvi%20Tours!%20I%20want%20to%20book%20an%20outstation%20cab%20from%20Mumbai."
+                  href="https://wa.me/919821790471?text=Hi%20Manasvi%20Tours!%20I%20need%20a%20cab%20for%20a%20custom%20outstation%20route."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#25D366] hover:bg-[#1FB955] text-white rounded-xl font-semibold px-8 h-13 py-3 flex items-center justify-center gap-2 transition shadow-lg"
+                  className="bg-[#25D366] hover:bg-[#1FB955] text-white rounded-xl font-semibold px-8 py-3.5 flex items-center justify-center gap-2 transition shadow-lg"
                 >
-                  <WhatsAppIcon className="h-5 w-5" /> Chat on WhatsApp
+                  <WhatsAppIcon className="h-5 w-5" /> Contact Us on WhatsApp
                 </a>
                 <a
                   href="tel:+919821790471"
-                  className="border border-white/30 rounded-xl font-semibold px-8 py-3 flex items-center justify-center gap-2 hover:bg-white/10 transition"
+                  className="border border-white/30 rounded-xl font-semibold px-8 py-3.5 flex items-center justify-center gap-2 hover:bg-white/10 transition"
                 >
                   <Phone className="h-4 w-4" /> +91 98217 90471
                 </a>
@@ -459,76 +309,82 @@ function OutstationPage() {
   );
 }
 
-/* ── Helper Components ── */
+/* ── Sub-components ── */
 
-function Field({ label, children, error }: { label: string; children: React.ReactNode; error?: string }) {
+function InputField({ label, children, error }: { label: string; children: React.ReactNode; error?: string }) {
   return (
     <label className="block">
-      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
+      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</span>
       <div className="mt-1.5">{children}</div>
       {error && <p className="mt-1 text-[10px] text-red-500 font-medium">{error}</p>}
     </label>
   );
 }
 
-function RouteCard({ r, sedanRate }: { r: typeof routes[0]; sedanRate: number }) {
-  const [trip, setTrip] = useState<"one" | "round">("one");
-  const km = trip === "round" ? r.km * 2 : r.km;
-  const price = km * sedanRate;
-
+function RouteCard({ r }: { r: typeof ROUTES[0] }) {
   return (
-    <div className="relative rounded-2xl bg-card border p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+    <div className="relative rounded-xl sm:rounded-2xl bg-card border p-3.5 sm:p-5 hover:-translate-y-1 hover:shadow-xl transition-all group flex flex-col h-full">
       {r.popular && (
-        <span className="absolute -top-2.5 right-4 bg-brand text-brand-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+        <span className="absolute -top-2.5 right-3 bg-brand text-brand-foreground text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow z-10">
           Popular
         </span>
       )}
-      <div className="flex items-center gap-2 text-navy">
-        <Car className="h-5 w-5 text-brand shrink-0" />
-        <h3 className="font-bold text-base">{r.from} → {r.to}</h3>
+      <div className="flex items-start sm:items-center gap-1.5 sm:gap-2">
+        <Car className="h-4 w-4 sm:h-5 sm:w-5 text-brand shrink-0 mt-0.5 sm:mt-0" />
+        <h3 className="font-bold text-navy text-sm sm:text-base leading-tight">
+          <span className="text-xs sm:text-base text-muted-foreground font-medium sm:hidden">To </span>
+          <span className="hidden sm:inline">{r.from} → </span>{r.to}
+        </h3>
       </div>
-      <div className="mt-3 flex items-center gap-3 text-sm">
-        <span className="px-2 py-1 rounded-md bg-brand/10 text-brand font-medium">{r.km} km</span>
-        <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-3.5 w-3.5" /> ~{r.hr} hr</span>
+      <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+        <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-brand/10 text-brand font-semibold">{r.km} km</span>
+        <span className="flex items-center gap-0.5 sm:gap-1 text-muted-foreground"><Clock className="h-3 w-3" /> ~{r.hr} hrs</span>
       </div>
-      <div className="mt-3 inline-flex p-0.5 rounded-lg bg-soft border text-xs font-medium">
+      <div className="mt-auto pt-3">
+        <p className="text-base sm:text-xl font-bold text-near-black">
+          <span className="text-[10px] sm:text-xs text-muted-foreground font-normal block sm:inline">From </span>
+          ₹{r.price.toLocaleString("en-IN")}
+        </p>
         <button
-          onClick={() => setTrip("one")}
-          className={`px-3 py-1.5 rounded-md transition ${trip === "one" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
+          onClick={() => bookOnWhatsApp({ from: r.from, to: r.to, tripType: "Outstation" })}
+          className="mt-2 sm:mt-3 w-full py-2 sm:py-2.5 rounded-lg bg-brand text-brand-foreground text-[11px] sm:text-sm font-semibold hover:bg-brand/90 flex items-center justify-center gap-1.5 sm:gap-2 transition group-hover:shadow-lg group-hover:shadow-brand/20"
         >
-          One Way
-        </button>
-        <button
-          onClick={() => setTrip("round")}
-          className={`px-3 py-1.5 rounded-md transition ${trip === "round" ? "bg-brand text-brand-foreground" : "text-muted-foreground"}`}
-        >
-          Round Trip
+          Book <span className="hidden sm:inline">Now</span> <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
         </button>
       </div>
-      <p className="mt-3 text-xl font-bold text-near-black">
-        ₹{price.toLocaleString("en-IN")}
-        <span className="text-xs font-normal text-muted-foreground ml-1">sedan starting</span>
-      </p>
-      <button
-        onClick={() => bookOnWhatsApp({ from: r.from, to: r.to, tripType: trip === "round" ? "Outstation (Round Trip)" : "Outstation" })}
-        className="mt-3 w-full py-2.5 rounded-lg bg-brand text-brand-foreground text-sm font-medium hover:bg-brand/90 flex items-center justify-center gap-2 transition"
-      >
-        Book This Route <ArrowRight className="h-4 w-4" />
-      </button>
     </div>
   );
 }
 
-function Step({ n, icon, title, desc }: { n: number; icon: React.ReactNode; title: string; desc: string }) {
+function FleetCard({ f }: { f: typeof FLEET[0] }) {
   return (
-    <div className="relative bg-card border rounded-2xl p-6 text-center">
-      <div className="mx-auto h-14 w-14 rounded-full bg-brand text-brand-foreground flex items-center justify-center font-bold text-lg shadow-lg shadow-brand/30">
-        {n}
+    <div className="rounded-2xl bg-card border overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div className="h-44 overflow-hidden bg-muted">
+        <img src={f.img} alt={f.model} className="w-full h-full object-cover" loading="lazy" width={400} height={176} />
       </div>
-      <div className="mt-3 inline-flex items-center gap-1.5 text-brand font-medium text-sm">
-        {icon} {title}
+      <div className="p-5">
+        <h3 className="text-lg font-bold text-navy">{f.tier}</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">{f.model}</p>
+        <div className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+          <Users className="h-4 w-4 text-brand" /> Up to {f.pax} passengers
+        </div>
+        <p className="mt-3 text-2xl font-bold text-brand">
+          ₹{f.rate}<span className="text-sm font-normal text-muted-foreground">/km</span>
+        </p>
+        <ul className="mt-3 space-y-1">
+          {f.features.map(feat => (
+            <li key={feat} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Check className="h-3 w-3 text-brand shrink-0" /> {feat}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() => bookOnWhatsApp({ car: f.model, tripType: "Outstation" })}
+          className="mt-4 w-full py-2.5 rounded-lg bg-navy text-navy-foreground text-sm font-semibold hover:bg-navy/90 transition"
+        >
+          Book {f.tier}
+        </button>
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
     </div>
   );
 }

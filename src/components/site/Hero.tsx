@@ -448,6 +448,7 @@ export function Hero() {
                 <input className={`field ${errors.returnDate ? 'border-red-500' : ''}`} type="date" value={returnDate} onChange={e => { setReturnDate(e.target.value); setErrors(p => ({ ...p, returnDate: '' })) }} />
               </Field>
             )}
+
             <Field label="Passengers">
               <input
                 className="field"
