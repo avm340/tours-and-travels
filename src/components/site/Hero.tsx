@@ -217,15 +217,13 @@ export function Hero() {
       ? `${selectedDate.getFullYear()}-${(selectedDate.getMonth()+1).toString().padStart(2,"0")}-${selectedDate.getDate().toString().padStart(2,"0")}T${selectedTime}`
       : "";
 
-    import('@/lib/whatsapp').then(({ bookOnWhatsApp }) => {
-      bookOnWhatsApp({
+    bookOnWhatsApp({
         tripType: round ? `${category} (Round Trip)` : category,
         from: "Mumbai",
         to: toCity,
         date: dateStr + (round && returnDate ? ` to ${returnDate}` : ""),
         passengers,
       });
-    });
   };
 
   return (
@@ -238,6 +236,7 @@ export function Hero() {
         alt="Chauffeur-driven cab on scenic highway"
         width={1920}
         height={1088}
+        fetchpriority="high"
         className="absolute inset-0 w-full h-[115%] object-cover will-change-transform"
         style={{ transform: `translate3d(0, ${y * 0.35}px, 0) scale(1.05)` }}
       />
@@ -269,6 +268,8 @@ export function Hero() {
               aria-checked={round}
               onClick={() => setRound((v) => !v)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${round ? "bg-brand" : "bg-muted"}`}
+              aria-label="Toggle round trip"
+              aria-pressed={round}
             >
               <span
                 className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${round ? "translate-x-5" : "translate-x-0.5"}`}
@@ -388,13 +389,13 @@ export function Hero() {
                   <div className="calendar-dropdown absolute left-0 top-[calc(100%+4px)] bg-card border border-border rounded-xl shadow-2xl shadow-black/15 z-50 p-3 w-[300px]">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-3">
-                      <button onClick={prevMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors">
+                      <button onClick={prevMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors" aria-label="Previous month">
                         <ChevronLeft className="h-4 w-4" />
                       </button>
                       <span className="text-sm font-semibold text-foreground">
                         {MONTHS[calMonth]} {calYear}
                       </span>
-                      <button onClick={nextMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors">
+                      <button onClick={nextMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors" aria-label="Next month">
                         <ChevronRight className="h-4 w-4" />
                       </button>
                     </div>
