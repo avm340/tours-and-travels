@@ -51,7 +51,7 @@ export const carsData: Car[] = [
     name: "Toyota Innova",
     category: "SUV",
     seats: 7,
-    pricePerKm: 17,
+    pricePerKm: 18,
     images: [
       "/cars/toyota-innova/innova-4.jpg",
       "/cars/toyota-innova/innova-1.jpg",
@@ -86,7 +86,7 @@ export const carsData: Car[] = [
     name: "Force Urbania Traveller",
     category: "Tempo Traveller",
     seats: 16,
-    pricePerKm: 32,
+    pricePerKm: 35,
     images: [
       "/cars/urbania/urbania-3.jpg",
       "/cars/urbania/urbania-1.jpg",

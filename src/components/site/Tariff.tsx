@@ -16,7 +16,7 @@ const plans = [
   {
     icon: Sun,
     name: "Local Full Day",
-    price: "₹1499",
+    price: "₹2199",
     unit: " / 8hr · 80km",
     popular: true,
     features: ["Chauffeur included", "Within city limits", "Fuel included", "Free cancellation"],
