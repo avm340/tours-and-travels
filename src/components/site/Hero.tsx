@@ -1,9 +1,87 @@
 import heroImg from "@/assets/hero-car.jpg";
-import { Search, ShieldCheck, XCircle, Headphones, MapPin, Users, Star, Map, MessageCircle } from "lucide-react";
+import { ShieldCheck, XCircle, Headphones, MapPin, Users, Star, Map, ChevronLeft, ChevronRight, Clock, CalendarDays, Route, Sun, Plane, Package } from "lucide-react";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useScrollY } from "@/hooks/use-reveal";
 import { CountUp } from "./CountUp";
-import { useState } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+
+/* ── Popular destination suggestions ── */
+const DESTINATIONS = [
+  { name: "Pune", tag: "Popular" },
+  { name: "Shirdi", tag: "Popular" },
+  { name: "Goa", tag: "Popular" },
+  { name: "Lonavala", tag: "Popular" },
+  { name: "Mahabaleshwar", tag: "Hill Station" },
+  { name: "Nashik", tag: "Temple" },
+  { name: "Nagpur", tag: "City" },
+  { name: "Kolhapur", tag: "Temple" },
+  { name: "Alibag", tag: "Beach" },
+  { name: "Jaipur", tag: "Heritage" },
+  { name: "Udaipur", tag: "Heritage" },
+  { name: "Delhi", tag: "Metro" },
+  { name: "Agra", tag: "Heritage" },
+  { name: "Varanasi", tag: "Temple" },
+  { name: "Manali", tag: "Hill Station" },
+  { name: "Shimla", tag: "Hill Station" },
+  { name: "Ooty", tag: "Hill Station" },
+  { name: "Mysore", tag: "Heritage" },
+  { name: "Hyderabad", tag: "Metro" },
+  { name: "Bangalore", tag: "Metro" },
+  { name: "Kerala", tag: "Backwaters" },
+  { name: "Darjeeling", tag: "Hill Station" },
+  { name: "Rishikesh", tag: "Adventure" },
+  { name: "Amritsar", tag: "Temple" },
+];
+
+/* ── Trip categories ── */
+const CATEGORIES = [
+  { value: "Outstation", label: "Outstation", icon: Route },
+  { value: "Local — Half Day", label: "Half Day", icon: Clock },
+  { value: "Local — Full Day", label: "Full Day", icon: Sun },
+  { value: "Airport Transfer", label: "Airport", icon: Plane },
+  { value: "Tour Package", label: "Tour Package", icon: Package },
+];
+
+/* ── Time slots ── */
+const TIME_SLOTS = (() => {
+  const slots: string[] = [];
+  for (let h = 0; h < 24; h++) {
+    for (const m of [0, 30]) {
+      const hh = h.toString().padStart(2, "0");
+      const mm = m.toString().padStart(2, "0");
+      slots.push(`${hh}:${mm}`);
+    }
+  }
+  return slots;
+})();
+
+function formatTime12(t: string) {
+  const [hStr, mStr] = t.split(":");
+  const h = parseInt(hStr);
+  const suffix = h >= 12 ? "PM" : "AM";
+  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return `${h12}:${mStr} ${suffix}`;
+}
+
+function getTimePeriod(t: string) {
+  const h = parseInt(t.split(":")[0]);
+  if (h < 6) return "Night";
+  if (h < 12) return "Morning";
+  if (h < 17) return "Afternoon";
+  return "Evening";
+}
+
+/* ── Calendar helpers ── */
+const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function getDaysInMonth(year: number, month: number) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function getFirstDayOfWeek(year: number, month: number) {
+  return new Date(year, month, 1).getDay();
+}
 
 export function Hero() {
   const y = useScrollY();
@@ -11,24 +89,122 @@ export function Hero() {
 
   const [category, setCategory] = useState("Outstation");
   const [toCity, setToCity] = useState("");
-  const [date, setDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState("09:00");
   const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState("1");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const minDate = new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString().slice(0, 16);
+  /* Calendar state */
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [calMonth, setCalMonth] = useState(new Date().getMonth());
+  const [calYear, setCalYear] = useState(new Date().getFullYear());
+  const calRef = useRef<HTMLDivElement>(null);
+  const timeRef = useRef<HTMLDivElement>(null);
+
+  /* Autocomplete state */
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightIdx, setHighlightIdx] = useState(-1);
+  const suggestRef = useRef<HTMLDivElement>(null);
+  const toCityRef = useRef<HTMLInputElement>(null);
+
+  const now = new Date();
+  const minBookingDate = new Date(now.getTime() + 12 * 60 * 60 * 1000);
+
+  /* Filter destinations */
+  const filteredDestinations = useMemo(() => {
+    if (!toCity.trim()) return DESTINATIONS;
+    const q = toCity.toLowerCase();
+    return DESTINATIONS.filter(d =>
+      d.name.toLowerCase().includes(q) || d.tag.toLowerCase().includes(q)
+    );
+  }, [toCity]);
+
+  /* Close dropdowns on outside click */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (calRef.current && !calRef.current.contains(e.target as Node)) setShowCalendar(false);
+      if (timeRef.current && !timeRef.current.contains(e.target as Node)) setShowTimePicker(false);
+      if (suggestRef.current && !suggestRef.current.contains(e.target as Node) &&
+          toCityRef.current && !toCityRef.current.contains(e.target as Node)) setShowSuggestions(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  /* Calendar navigation */
+  const prevMonth = () => {
+    if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); }
+    else setCalMonth(m => m - 1);
+  };
+  const nextMonth = () => {
+    if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); }
+    else setCalMonth(m => m + 1);
+  };
+
+  /* Is date selectable? */
+  const isDateDisabled = (day: number) => {
+    const d = new Date(calYear, calMonth, day);
+    d.setHours(23, 59, 59); // allow selecting today even if past noon
+    return d < new Date(minBookingDate.getFullYear(), minBookingDate.getMonth(), minBookingDate.getDate());
+  };
+
+  const isToday = (day: number) => {
+    const t = new Date();
+    return day === t.getDate() && calMonth === t.getMonth() && calYear === t.getFullYear();
+  };
+
+  const isSelected = (day: number) => {
+    if (!selectedDate) return false;
+    return day === selectedDate.getDate() && calMonth === selectedDate.getMonth() && calYear === selectedDate.getFullYear();
+  };
+
+  const selectDay = (day: number) => {
+    if (isDateDisabled(day)) return;
+    setSelectedDate(new Date(calYear, calMonth, day));
+    setErrors(p => ({ ...p, date: "" }));
+    // After selecting date, show time picker
+    setTimeout(() => {
+      setShowCalendar(false);
+      setShowTimePicker(true);
+    }, 200);
+  };
+
+  /* Build calendar grid */
+  const daysInMonth = getDaysInMonth(calYear, calMonth);
+  const firstDay = getFirstDayOfWeek(calYear, calMonth);
+  const prevMonthDays = calMonth === 0 ? getDaysInMonth(calYear - 1, 11) : getDaysInMonth(calYear, calMonth - 1);
+
+  const calendarCells: { day: number; outside: boolean }[] = [];
+  // Previous month's trailing days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    calendarCells.push({ day: prevMonthDays - i, outside: true });
+  }
+  // Current month
+  for (let d = 1; d <= daysInMonth; d++) {
+    calendarCells.push({ day: d, outside: false });
+  }
+  // Next month's leading days
+  const remaining = 42 - calendarCells.length;
+  for (let d = 1; d <= remaining; d++) {
+    calendarCells.push({ day: d, outside: true });
+  }
+
+  const formattedDate = selectedDate
+    ? `${selectedDate.getDate()} ${MONTHS[selectedDate.getMonth()].slice(0, 3)} ${selectedDate.getFullYear()}`
+    : "";
 
   const handleSearch = () => {
     const newErrors: Record<string, string> = {};
     if (!toCity.trim()) newErrors.toCity = "Destination is required";
     else if (toCity.toLowerCase() === "mumbai") newErrors.toCity = "Destination cannot be Mumbai";
 
-    if (!date) newErrors.date = "Pickup date is required";
-    else if (date < minDate) newErrors.date = "Must be at least 12 hours from now";
+    if (!selectedDate) newErrors.date = "Pickup date is required";
 
     if (round) {
       if (!returnDate) newErrors.returnDate = "Return date is required";
-      else if (date && new Date(returnDate) < new Date(date)) newErrors.returnDate = "Must be after pickup date";
+      else if (selectedDate && new Date(returnDate) < selectedDate) newErrors.returnDate = "Must be after pickup date";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -37,12 +213,16 @@ export function Hero() {
     }
     setErrors({});
 
+    const dateStr = selectedDate
+      ? `${selectedDate.getFullYear()}-${(selectedDate.getMonth()+1).toString().padStart(2,"0")}-${selectedDate.getDate().toString().padStart(2,"0")}T${selectedTime}`
+      : "";
+
     import('@/lib/whatsapp').then(({ bookOnWhatsApp }) => {
       bookOnWhatsApp({
         tripType: round ? `${category} (Round Trip)` : category,
         from: "Mumbai",
         to: toCity,
-        date: date + (round && returnDate ? ` to ${returnDate}` : ""),
+        date: dateStr + (round && returnDate ? ` to ${returnDate}` : ""),
         passengers,
       });
     });
@@ -80,7 +260,7 @@ export function Hero() {
         </div>
 
         {/* Booking card */}
-        <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6 float-soft">
+        <div className="mt-8 sm:mt-10 bg-background text-foreground rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6">
           {/* Round trip toggle */}
           <div className="mb-4 flex items-center gap-3">
             <button
@@ -100,25 +280,239 @@ export function Hero() {
             </span>
           </div>
 
+          {/* ── Trip Category Pills ── */}
+          <div className="mb-4">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Trip Category</span>
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+              {CATEGORIES.map((cat) => {
+                const active = category === cat.value;
+                const Icon = cat.icon;
+                return (
+                  <button
+                    key={cat.value}
+                    onClick={() => setCategory(cat.value)}
+                    className={`trip-pill flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 border ${
+                      active
+                        ? "bg-brand text-brand-foreground border-brand shadow-md shadow-brand/25 scale-[1.02]"
+                        : "bg-soft text-muted-foreground border-border hover:border-brand/40 hover:text-foreground hover:bg-brand/5"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-start">
-            <Field label="Trip Category">
-              <select className="field" value={category} onChange={e => setCategory(e.target.value)}>
-                <option>Outstation</option>
-                <option>Local — Half Day</option>
-                <option>Local — Full Day</option>
-                <option>Airport Transfer</option>
-                <option>Tour Package</option>
-              </select>
-            </Field>
             <Field label="From City">
               <input className="field bg-muted text-muted-foreground cursor-not-allowed" type="text" value="Mumbai" readOnly />
             </Field>
+
+            {/* ── To City with Autocomplete ── */}
             <Field label="To City" error={errors.toCity}>
-              <input className={`field ${errors.toCity ? 'border-red-500' : ''}`} type="text" placeholder="Anywhere in India" value={toCity} onChange={e => { setToCity(e.target.value); setErrors(p => ({ ...p, toCity: '' })) }} />
+              <div className="relative">
+                <input
+                  ref={toCityRef}
+                  className={`field ${errors.toCity ? 'border-red-500' : ''}`}
+                  type="text"
+                  placeholder="Search destination..."
+                  value={toCity}
+                  onChange={e => {
+                    setToCity(e.target.value);
+                    setErrors(p => ({ ...p, toCity: '' }));
+                    setShowSuggestions(true);
+                    setHighlightIdx(-1);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onKeyDown={e => {
+                    if (!showSuggestions) return;
+                    if (e.key === "ArrowDown") { e.preventDefault(); setHighlightIdx(i => Math.min(i + 1, filteredDestinations.length - 1)); }
+                    else if (e.key === "ArrowUp") { e.preventDefault(); setHighlightIdx(i => Math.max(i - 1, 0)); }
+                    else if (e.key === "Enter" && highlightIdx >= 0) {
+                      e.preventDefault();
+                      setToCity(filteredDestinations[highlightIdx].name);
+                      setShowSuggestions(false);
+                    }
+                    else if (e.key === "Escape") setShowSuggestions(false);
+                  }}
+                  autoComplete="off"
+                />
+                {showSuggestions && filteredDestinations.length > 0 && (
+                  <div
+                    ref={suggestRef}
+                    className="suggest-dropdown absolute left-0 right-0 top-[calc(100%+4px)] bg-card border border-border rounded-xl shadow-2xl shadow-black/15 z-50 max-h-[260px] overflow-y-auto scrollbar-hide"
+                  >
+                    <div className="px-3 pt-2.5 pb-1.5">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        {toCity.trim() ? "Matching destinations" : "Popular destinations"}
+                      </span>
+                    </div>
+                    {filteredDestinations.map((d, i) => (
+                      <button
+                        key={d.name}
+                        className={`suggest-item w-full text-left px-3 py-2 flex items-center gap-3 transition-colors text-sm ${
+                          highlightIdx === i ? "bg-brand/10 text-brand" : "hover:bg-soft text-foreground"
+                        }`}
+                        onMouseEnter={() => setHighlightIdx(i)}
+                        onClick={() => {
+                          setToCity(d.name);
+                          setShowSuggestions(false);
+                          setErrors(p => ({ ...p, toCity: '' }));
+                        }}
+                      >
+                        <MapPin className="h-3.5 w-3.5 text-brand/60 shrink-0" />
+                        <span className="font-medium">{d.name}</span>
+                        <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-brand/8 text-brand/70 font-medium">{d.tag}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </Field>
-            <Field label="Pickup Date &amp; Time" error={errors.date}>
-              <input className={`field ${errors.date ? 'border-red-500' : ''}`} type="datetime-local" min={minDate} value={date} onChange={e => { setDate(e.target.value); setErrors(p => ({ ...p, date: '' })) }} />
+
+            {/* ── Date Picker ── */}
+            <Field label="Pickup Date" error={errors.date}>
+              <div className="relative" ref={calRef}>
+                <button
+                  type="button"
+                  onClick={() => { setShowCalendar(v => !v); setShowTimePicker(false); }}
+                  className={`field text-left flex items-center gap-2 ${errors.date ? 'border-red-500' : ''} ${!selectedDate ? 'text-muted-foreground' : 'text-foreground'}`}
+                >
+                  <CalendarDays className="h-4 w-4 text-brand/60 shrink-0" />
+                  <span>{formattedDate || "Select date"}</span>
+                </button>
+
+                {showCalendar && (
+                  <div className="calendar-dropdown absolute left-0 top-[calc(100%+4px)] bg-card border border-border rounded-xl shadow-2xl shadow-black/15 z-50 p-3 w-[300px]">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-3">
+                      <button onClick={prevMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors">
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <span className="text-sm font-semibold text-foreground">
+                        {MONTHS[calMonth]} {calYear}
+                      </span>
+                      <button onClick={nextMonth} className="h-8 w-8 rounded-lg hover:bg-soft flex items-center justify-center transition-colors">
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                    {/* Weekday headers */}
+                    <div className="grid grid-cols-7 mb-1">
+                      {DAYS.map(d => (
+                        <div key={d} className="text-center text-[10px] font-semibold text-muted-foreground uppercase py-1">{d}</div>
+                      ))}
+                    </div>
+                    {/* Days grid */}
+                    <div className="grid grid-cols-7 gap-0.5">
+                      {calendarCells.map((cell, idx) => {
+                        if (cell.outside) {
+                          return <div key={`out-${idx}`} className="h-9 w-full flex items-center justify-center text-xs text-muted-foreground/30">{cell.day}</div>;
+                        }
+                        const disabled = isDateDisabled(cell.day);
+                        const today = isToday(cell.day);
+                        const selected = isSelected(cell.day);
+                        return (
+                          <button
+                            key={`d-${cell.day}`}
+                            disabled={disabled}
+                            onClick={() => selectDay(cell.day)}
+                            className={`cal-day h-9 w-full rounded-lg text-xs font-medium flex items-center justify-center transition-all duration-150 ${
+                              disabled
+                                ? "text-muted-foreground/30 cursor-not-allowed"
+                                : selected
+                                ? "bg-brand text-white shadow-md shadow-brand/30 scale-105"
+                                : today
+                                ? "bg-brand/15 text-brand font-bold ring-1 ring-brand/30"
+                                : "text-foreground hover:bg-brand/10 hover:text-brand"
+                            }`}
+                          >
+                            {cell.day}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {/* Quick actions */}
+                    <div className="flex justify-between items-center mt-3 pt-2 border-t border-border/60">
+                      <button
+                        onClick={() => { setSelectedDate(null); }}
+                        className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        Clear
+                      </button>
+                      <button
+                        onClick={() => {
+                          const today = new Date();
+                          if (today >= minBookingDate) {
+                            setSelectedDate(today);
+                            setCalMonth(today.getMonth());
+                            setCalYear(today.getFullYear());
+                          } else {
+                            setSelectedDate(minBookingDate);
+                            setCalMonth(minBookingDate.getMonth());
+                            setCalYear(minBookingDate.getFullYear());
+                          }
+                        }}
+                        className="text-[11px] text-brand font-semibold hover:text-brand/80 transition-colors"
+                      >
+                        Earliest available
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </Field>
+
+            {/* ── Time Picker ── */}
+            <Field label="Pickup Time">
+              <div className="relative" ref={timeRef}>
+                <button
+                  type="button"
+                  onClick={() => { setShowTimePicker(v => !v); setShowCalendar(false); }}
+                  className="field text-left flex items-center gap-2"
+                >
+                  <Clock className="h-4 w-4 text-brand/60 shrink-0" />
+                  <span>{formatTime12(selectedTime)}</span>
+                </button>
+
+                {showTimePicker && (
+                  <div className="time-dropdown absolute left-0 top-[calc(100%+4px)] bg-card border border-border rounded-xl shadow-2xl shadow-black/15 z-50 p-3 w-[260px]">
+                    <div className="max-h-[220px] overflow-y-auto space-y-0.5 scrollbar-hide">
+                      {(() => {
+                        let lastPeriod = "";
+                        return TIME_SLOTS.map(t => {
+                          const period = getTimePeriod(t);
+                          const showHeader = period !== lastPeriod;
+                          lastPeriod = period;
+                          const active = selectedTime === t;
+                          return (
+                            <div key={t}>
+                              {showHeader && (
+                                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground px-2 pt-2 pb-1">
+                                  {period}
+                                </div>
+                              )}
+                              <button
+                                onClick={() => { setSelectedTime(t); setShowTimePicker(false); }}
+                                className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
+                                  active
+                                    ? "bg-brand text-white font-semibold shadow-sm"
+                                    : "hover:bg-brand/10 text-foreground"
+                                }`}
+                              >
+                                {formatTime12(t)}
+                              </button>
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Field>
+
             {round && (
               <Field label="Return Date" error={errors.returnDate}>
                 <input className={`field ${errors.returnDate ? 'border-red-500' : ''}`} type="date" value={returnDate} onChange={e => { setReturnDate(e.target.value); setErrors(p => ({ ...p, returnDate: '' })) }} />
@@ -176,9 +570,29 @@ export function Hero() {
           border-radius: 0.5rem; background: var(--color-soft);
           border: 1px solid var(--color-border); font-size: 0.875rem;
           color: var(--color-foreground); outline: none;
+          cursor: pointer;
         }
         @media (min-width: 640px) { .field { height: 48px; font-size: 0.95rem; } }
         .field:focus { border-color: var(--color-brand); }
+        input.field { cursor: text; }
+        input.field[readonly] { cursor: not-allowed; }
+
+        .calendar-dropdown, .time-dropdown, .suggest-dropdown {
+          animation: dropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes dropIn {
+          from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .cal-day { position: relative; }
+        .cal-day:not(:disabled):hover { transform: scale(1.1); }
+        .cal-day:not(:disabled):active { transform: scale(0.95); }
+
+        .suggest-item:last-child { border-radius: 0 0 0.75rem 0.75rem; }
+        .suggest-item:first-of-type { border-radius: 0; }
+
+        .trip-pill:active { transform: scale(0.96); }
       `}</style>
     </section>
   );

@@ -5,7 +5,7 @@ export interface PageMeta {
   image?: string;
 }
 
-const BASE = 'https://www.manasvitours.com';
+const BASE = 'https://www.manasvitoursandtravels.com';
 
 export function setPageMeta({ title, description, url, image = '/og-image.jpg' }: PageMeta) {
   document.title = title;

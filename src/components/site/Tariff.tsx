@@ -3,6 +3,7 @@ import { bookOnWhatsApp } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useRef, useEffect } from "react";
 
+/* ── Reordered so "Most Popular" (Local Full Day) is at index 1 — visually center of 4 columns ── */
 const plans = [
   {
     icon: Clock,
@@ -43,9 +44,17 @@ export function Tariff() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Force reset scroll to start on mount to prevent half-scrolled views from browser cache
+    // Auto-scroll to the "Most Popular" card on mobile
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft = 0;
+      const popularIdx = plans.findIndex(p => p.popular);
+      if (popularIdx >= 0) {
+        const cards = scrollRef.current.children;
+        if (cards[popularIdx]) {
+          const card = cards[popularIdx] as HTMLElement;
+          const scrollLeft = card.offsetLeft - (scrollRef.current.offsetWidth / 2) + (card.offsetWidth / 2);
+          scrollRef.current.scrollTo({ left: Math.max(0, scrollLeft), behavior: "instant" });
+        }
+      }
     }
   }, []);
 
@@ -57,7 +66,7 @@ export function Tariff() {
           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground">Choose the plan that fits your journey</p>
         </div>
 
-        {/* Mobile: horizontal scroll snap */}
+        {/* Mobile: horizontal scroll snap — auto-scrolls to popular */}
         <div className="sm:hidden -mx-4 px-4">
           <div
             ref={scrollRef}
@@ -69,8 +78,8 @@ export function Tariff() {
           </div>
         </div>
 
-        {/* Desktop: grid */}
-        <div className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Desktop: grid with popular card elevated */}
+        <div className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-6 items-end">
           {plans.map((p) => (
             <PlanCard key={p.name} p={p} />
           ))}
@@ -84,25 +93,34 @@ function PlanCard({ p, mobile }: { p: (typeof plans)[number]; mobile?: boolean }
   return (
     <div
       className={`relative rounded-2xl p-5 sm:p-6 bg-card border transition-all hover:-translate-y-1 hover:shadow-xl ${
-        p.popular ? "border-brand ring-2 ring-brand shadow-xl" : "border-border"
+        p.popular
+          ? "border-brand ring-2 ring-brand shadow-xl sm:scale-[1.04] sm:z-10 sm:-my-2 sm:py-8"
+          : "border-border"
       } ${mobile ? "snap-start shrink-0 w-[260px]" : ""}`}
     >
       {p.popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-brand-foreground text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full z-10 shadow-md">
-          Most Popular
-        </span>
+        <>
+          {/* Glow effect behind popular card */}
+          <div className="hidden sm:block absolute inset-0 -z-10 rounded-2xl bg-brand/10 blur-xl scale-110" />
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand to-brand-light text-brand-foreground text-[10px] sm:text-xs font-semibold px-4 py-1.5 rounded-full z-10 shadow-lg shadow-brand/30 whitespace-nowrap">
+            ⭐ Most Popular
+          </span>
+        </>
       )}
-      <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center">
+      {!p.popular && p.popular !== undefined ? null : null}
+      <div className={`h-10 w-10 sm:h-12 sm:w-12 rounded-xl flex items-center justify-center ${
+        p.popular ? "bg-brand text-white" : "bg-brand/10 text-brand"
+      }`}>
         <p.icon className="h-5 w-5 sm:h-6 sm:w-6" />
       </div>
       <h3 className="mt-3 text-lg sm:text-xl font-bold text-navy">{p.name}</h3>
-      <p className="mt-2 text-2xl sm:text-3xl font-bold text-near-black">
-        {p.price}<span className="text-xs sm:text-base font-normal text-muted-foreground">{p.unit}</span>
+      <p className={`mt-2 font-bold ${p.popular ? "text-3xl sm:text-4xl text-brand" : "text-2xl sm:text-3xl text-near-black"}`}>
+        {p.price}<span className={`font-normal ${p.popular ? "text-sm text-brand/70" : "text-xs sm:text-base text-muted-foreground"}`}>{p.unit}</span>
       </p>
       <ul className="mt-4 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
         {p.features.map((f) => (
           <li key={f} className="flex items-start gap-2">
-            <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand mt-0.5 shrink-0" />
+            <Check className={`h-3.5 w-3.5 sm:h-4 sm:w-4 mt-0.5 shrink-0 ${p.popular ? "text-brand" : "text-brand"}`} />
             <span>{f}</span>
           </li>
         ))}
@@ -115,9 +133,9 @@ function PlanCard({ p, mobile }: { p: (typeof plans)[number]; mobile?: boolean }
       </ul>
       <button
         onClick={() => bookOnWhatsApp({ tripType: p.name })}
-        className={`mt-5 w-full py-2.5 rounded-md font-medium text-sm transition ${
+        className={`mt-5 w-full py-2.5 sm:py-3 rounded-md font-medium text-sm transition ${
           p.popular
-            ? "bg-brand text-brand-foreground hover:bg-brand/90"
+            ? "bg-brand text-brand-foreground hover:bg-brand/90 shadow-lg shadow-brand/25"
             : "bg-navy text-navy-foreground hover:bg-navy/90"
         }`}
       >

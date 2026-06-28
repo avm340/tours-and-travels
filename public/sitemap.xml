@@ -1,62 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.manasvitours.com/</loc>
+    <loc>https://www.manasvitoursandtravels.com/</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/about</loc>
+    <loc>https://www.manasvitoursandtravels.com/about</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/outstation</loc>
+    <loc>https://www.manasvitoursandtravels.com/outstation</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/packages</loc>
+    <loc>https://www.manasvitoursandtravels.com/packages</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/contact</loc>
+    <loc>https://www.manasvitoursandtravels.com/contact</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/tnc</loc>
+    <loc>https://www.manasvitoursandtravels.com/tnc</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/innova-crysta</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/innova-crysta</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/innova-crysta-bucket</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/innova-crysta-bucket</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/innova</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/innova</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/rumion</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/rumion</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/urbania</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/urbania</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.manasvitours.com/fleet/swift-dzire</loc>
+    <loc>https://www.manasvitoursandtravels.com/fleet/swift-dzire</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
