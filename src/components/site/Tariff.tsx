@@ -94,15 +94,15 @@ function PlanCard({ p, mobile }: { p: (typeof plans)[number]; mobile?: boolean }
     <div
       className={`relative rounded-2xl p-5 sm:p-6 bg-card border transition-all hover:-translate-y-1 hover:shadow-xl ${
         p.popular
-          ? "border-brand ring-2 ring-brand shadow-xl sm:scale-[1.04] sm:z-10 sm:-my-2 sm:py-8"
+          ? "border-brand ring-2 ring-brand/60 shadow-2xl sm:scale-[1.06] sm:z-10 sm:-my-4 sm:py-10"
           : "border-border"
       } ${mobile ? "snap-start shrink-0 w-[260px]" : ""}`}
     >
       {p.popular && (
         <>
           {/* Glow effect behind popular card */}
-          <div className="hidden sm:block absolute inset-0 -z-10 rounded-2xl bg-brand/10 blur-xl scale-110" />
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand to-brand-light text-brand-foreground text-[10px] sm:text-xs font-semibold px-4 py-1.5 rounded-full z-10 shadow-lg shadow-brand/30 whitespace-nowrap">
+          <div className="hidden sm:block absolute inset-0 -z-10 rounded-2xl bg-brand/15 blur-2xl scale-[1.15] animate-glow-pulse" />
+          <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand to-brand-light text-brand-foreground text-xs sm:text-sm font-bold px-5 sm:px-6 py-1.5 sm:py-2 rounded-full z-10 shadow-xl shadow-brand/40 whitespace-nowrap tracking-wide">
             ⭐ Most Popular
           </span>
         </>

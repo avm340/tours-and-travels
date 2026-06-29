@@ -76,7 +76,7 @@ export function Testimonials() {
         {/* Desktop */}
         <div className="hidden sm:grid grid-cols-3 gap-6 stagger-children">
           {reviews.map((r) => (
-            <div key={r.name} className="glow-border p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-light/40 transition-all duration-300 relative group tilt-card">
+            <div key={r.name} className="glow-border p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-[rgba(15,25,50,0.95)] hover:border-brand-light/40 transition-all duration-300 relative group tilt-card">
               <Quote className="h-10 w-10 text-brand-light/8 absolute top-5 right-5 transition-all duration-300 group-hover:text-brand-light/20 group-hover:scale-110" />
               <StarRating rating={r.rating} px={16} />
               <p className="mt-4 text-sm leading-relaxed text-white/85 group-hover:text-white/95 transition-colors duration-200">"{r.text}"</p>
